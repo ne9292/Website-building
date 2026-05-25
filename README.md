@@ -1,96 +1,36 @@
 # Website Builder
 
-A full-stack website builder application that lets users create, edit, and publish websites through a drag-and-drop canvas editor.
+A full-stack website builder that lets users create, design, and publish websites through a visual drag-and-drop editor.
 
-## Features
-
-- **Authentication** — Register and login with JWT-based authentication
-- **Site management** — Create, edit, and delete multiple websites per user
-- **Drag-and-drop editor** — Place and resize elements (text, images, buttons, shapes) on a canvas
-- **Multi-page support** — Add multiple pages to each site with custom slugs
-- **Publish & share** — Publish sites with a public URL accessible to anyone
-- **AI generator** — Generate content with AI assistance
-- **Booking system** — Built-in booking component for service-based sites
-
-## Tech Stack
-
-**Frontend**
-- Angular 19
-- TypeScript
-
-**Backend**
-- ASP.NET Core 9
-- Entity Framework Core
-- ASP.NET Identity
-- JWT Authentication
-- SQL Server
-
-## Project Structure
+## Architecture
 
 ```
-├── Website building client/
-│   └── Website-building/        # Angular application
-│       └── src/app/
-│           ├── components/      # Editor, canvas, sidebar, toolbar
-│           ├── models/          # TypeScript interfaces
-│           └── services/        # API services
-│
-└── Website building server/
-    └── Website building/
-        ├── Website building.Api/        # Controllers, configuration
-        ├── Website building.Core/       # Entities, interfaces, DTOs
-        ├── Website_building.Data/       # DbContext, migrations
-        └── Website_building.Service/   # Business logic
+├── Website building client/   # Angular 21 frontend
+└── Website building server/   # ASP.NET Core (.NET 8) backend
 ```
 
-## Getting Started
+The client communicates with the server via a REST API secured with JWT authentication. Sites are stored in SQL Server and served publicly by subdomain.
 
-### Prerequisites
+## How It Works
 
-- [Node.js](https://nodejs.org/) (v18+)
-- [.NET 9 SDK](https://dotnet.microsoft.com/download)
-- SQL Server
+1. A user registers and logs in — receives a JWT token
+2. They create a site (name + subdomain)
+3. They open the visual editor and build pages by dragging elements onto a canvas
+4. Each page is made of sections, and each section stores its layout as JSON
+5. When ready, they publish the site — it becomes publicly accessible at `/site/{subdomain}`
 
-### Backend Setup
+## Key Features
 
-1. Navigate to the API project:
-   ```bash
-   cd "Website building server/Website building"
-   ```
+- Visual drag-and-drop canvas editor with 21 element types and 18 geometric shapes
+- Multi-page sites (up to 6 pages per site)
+- Publish / draft toggle with public URL
+- Shopping cart, booking forms, contact forms, galleries, maps, countdowns, and more
+- Undo/redo history (40 states)
+- JWT authentication
 
-2. Create `appsettings.Development.json` with your configuration:
-   ```json
-   {
-     "ConnectionStrings": {
-       "DefaultConnection": "your-connection-string"
-     },
-     "Jwt": {
-       "Key": "your-secret-key-min-32-characters",
-       "Issuer": "WebsiteBuilding",
-       "Audience": "WebsiteBuildingClient"
-     }
-   }
-   ```
+## Setup
 
-3. Apply migrations and run:
-   ```bash
-   dotnet ef database update
-   dotnet run --project "Website building.Api"
-   ```
+See the README in each subfolder:
 
-   The API will be available at `https://localhost:7259`.
-
-### Frontend Setup
-
-1. Navigate to the Angular project:
-   ```bash
-   cd "Website building client/Website-building"
-   ```
-
-2. Install dependencies and run:
-   ```bash
-   npm install
-   ng serve
-   ```
-
-   The app will be available at `http://localhost:4200`.
+- [Server setup](Website%20building%20server/README.md)
+- [Client setup](Website%20building%20client/Website-building/README.md)
