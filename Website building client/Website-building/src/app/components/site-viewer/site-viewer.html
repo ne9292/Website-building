@@ -1,0 +1,43 @@
+<!-- site-viewer.html -->
+
+<div *ngIf="loading()" class="sv-loading">
+  <div class="sv-spinner"></div>
+</div>
+
+<div *ngIf="!loading() && notFound()" class="sv-not-found">
+  <div class="sv-404">404</div>
+  <p>האתר לא נמצא</p>
+</div>
+
+<div *ngIf="!loading() && !notFound()" class="sv-wrap" dir="rtl">
+
+  <!-- הקנבס — width:100% → ממלא את כל המסך.
+       x ו-width הם אחוזים → תמיד פרופורציונלי.
+       y ו-height הם px → הגובה נשמר כפי שנבנה. -->
+  <div class="sv-canvas" [style.min-height.px]="canvasHeight">
+
+    <div *ngFor="let el of elements()"
+      class="sv-el"
+      [style.left]="toPercX(el.x)"
+      [style.width]="toPercW(el.width)"
+      [style.top.px]="el.type === 'navbar' && el.content?.sticky ? 0 : el.y"
+      [style.height.px]="el.height"
+      [style.position]="el.type === 'navbar' && el.content?.sticky ? 'sticky' : 'absolute'"
+      [style.z-index]="el.type === 'navbar' && el.content?.sticky ? 1000 : el.zIndex || 0"
+      [style.opacity]="el.opacity ?? 1"
+      [style.box-shadow]="shadowStyle(el)"
+      [style.border-radius.px]="el.border?.radius || 0"
+      [style.outline]="(el.border?.width || 0) > 0
+        ? el.border.width + 'px ' + (el.border.style || 'solid') + ' ' + el.border.color
+        : null">
+
+      <app-site-element
+        [el]="el"
+        [pages]="pages()"
+        (navigate)="navigateTo($event)"
+        (addToCart)="addToCart($event)"
+        (submitBooking)="submitBooking($event)" />
+
+    </div>
+  </div>
+</div>

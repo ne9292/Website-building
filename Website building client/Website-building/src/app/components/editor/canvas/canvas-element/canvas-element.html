@@ -1,0 +1,539 @@
+<!-- ============================================================ -->
+<!-- canvas-element.html                                           -->
+<!-- מיקום: src/app/components/editor/canvas/canvas-element/canvas-element.html -->
+<!-- ✅ תיקון: stopEditText() נקראת כאן אבל מוגדרת ב-canvas.ts  -->
+<!--    הפתרון: canvas-element.ts מגדיר stopEditText שקורא ל-state -->
+<!-- ✅ תיקון: placeholder תמונה/מוצר — לוגו מקומי במקום אייקון -->
+<!-- ✅ תיקון גלריה: כפתור "הוסף עוד" גם כשיש תמונות             -->
+<!-- ✅ תיקון וידאו: קריאה ל-triggerVideoUpload במקום triggerImageUpload -->
+<!-- ✅ תיקון וידאו: תמיכה ב-URL חיצוני ישירות מה-placeholder    -->
+<!-- ============================================================ -->
+
+<!-- ==================== HERO BANNER ==================== -->
+<div *ngIf="el.type === 'hero'" class="el-hero"
+  [style.background]="el.content.bgImage
+    ? 'url(' + el.content.bgImage + ') ' + (el.content.bgPosition || 'center') + '/cover'
+    : el.content.bgColor"
+  [style.font-family]="el.content.fontFamily"
+  (mousedown)="el.content.bgImage && state.selectedEl()?.id === el.id ? startImageDrag($event, el) : null">
+
+  <div *ngIf="el.content.bgImage" class="hero-overlay"
+    [style.background]="'rgba(0,0,0,' + el.content.overlayOpacity + ')'">
+  </div>
+
+  <div class="hero-inner">
+    <ng-container *ngIf="state.editingTextId() !== el.id">
+      <h2 [style.color]="el.content.textColor">{{ el.content.title }}</h2>
+      <p  [style.color]="el.content.textColor">{{ el.content.subtitle }}</p>
+      <button *ngIf="el.content.showBtn"
+        [style.background]="el.content.btnColor" class="hero-cta">
+        {{ el.content.btnText }}
+      </button>
+    </ng-container>
+    <ng-container *ngIf="state.editingTextId() === el.id">
+      <input class="ie-input ie-title"
+        [(ngModel)]="el.content.title"
+        [style.color]="el.content.textColor"
+        (blur)="state.editingTextId.set(null)"
+        (click)="$event.stopPropagation()" />
+      <input class="ie-input ie-sub"
+        [(ngModel)]="el.content.subtitle"
+        [style.color]="el.content.textColor"
+        (blur)="state.editingTextId.set(null)"
+        (click)="$event.stopPropagation()" />
+    </ng-container>
+  </div>
+</div>
+
+<!-- ==================== טקסט ==================== -->
+<div *ngIf="el.type === 'text'" class="el-text"
+  [style.background]="el.content.bgColor || '#2d2d2d'"
+  [style.font-family]="el.content.fontFamily">
+
+  <div *ngIf="state.editingTextId() !== el.id"
+    [style.font-size.px]="el.content.fontSize"
+    [style.color]="el.content.color"
+    [style.font-weight]="el.content.bold ? 'bold' : 'normal'"
+    [style.font-style]="el.content.italic ? 'italic' : 'normal'"
+    [style.text-decoration]="el.content.underline ? 'underline' : 'none'"
+    [style.text-align]="el.content.align"
+    [style.line-height]="el.content.lineHeight"
+    [innerHTML]="el.content.htmlText || el.content.text">
+  </div>
+
+  <div *ngIf="state.editingTextId() === el.id"
+    [id]="'quill-' + el.id"
+    (click)="$event.stopPropagation()"
+    (mousedown)="$event.stopPropagation()"
+    style="height:100%; min-height:80px; background:white; position:relative;">
+  </div>
+</div>
+
+<!-- ==================== כפתור ==================== -->
+<div *ngIf="el.type === 'button'" class="el-button">
+  <input *ngIf="state.editingTextId() === el.id" class="ie-btn"
+    [(ngModel)]="el.content.label"
+    [style.background]="el.content.bgColor"
+    [style.color]="el.content.textColor"
+    (blur)="state.editingTextId.set(null)"
+    (click)="$event.stopPropagation()"
+    (mousedown)="$event.stopPropagation()" />
+
+  <button *ngIf="state.editingTextId() !== el.id
+    && el.content.style !== 'outline'
+    && el.content.style !== 'ghost'
+    && el.content.style !== 'pill'"
+    [style.background]="el.content.bgColor"
+    [style.color]="el.content.textColor"
+    [style.font-size.px]="el.content.fontSize"
+    [style.border-radius.px]="el.content.radius"
+    [style.font-family]="el.content.fontFamily"
+    [style.font-weight]="el.content.bold ? 'bold' : 'normal'"
+    class="btn-filled">{{ el.content.label }}</button>
+
+  <button *ngIf="state.editingTextId() !== el.id && el.content.style === 'outline'"
+    [style.color]="el.content.bgColor"
+    [style.border]="'2px solid ' + el.content.bgColor"
+    [style.font-size.px]="el.content.fontSize"
+    [style.border-radius.px]="el.content.radius"
+    [style.font-family]="el.content.fontFamily"
+    class="btn-outline">{{ el.content.label }}</button>
+
+  <button *ngIf="state.editingTextId() !== el.id && el.content.style === 'ghost'"
+    [style.background]="el.content.bgColor + '22'"
+    [style.color]="el.content.bgColor"
+    [style.font-size.px]="el.content.fontSize"
+    [style.border-radius.px]="el.content.radius"
+    class="btn-ghost">{{ el.content.label }}</button>
+
+  <button *ngIf="state.editingTextId() !== el.id && el.content.style === 'pill'"
+    [style.background]="el.content.bgColor"
+    [style.color]="el.content.textColor"
+    [style.font-size.px]="el.content.fontSize"
+    class="btn-pill">{{ el.content.label }}</button>
+</div>
+
+<!-- ==================== תמונה ==================== -->
+<div *ngIf="el.type === 'image'" class="el-image"
+  [style.border-radius.px]="el.content.borderRadius"
+  (click)="!el.content.url ? triggerImageUpload(el, 'url') : null">
+
+  <img *ngIf="el.content.url" [src]="el.content.url"
+    [style.object-fit]="el.content.objectFit"
+    [style.object-position]="el.content.objectPosition"
+    [style.cursor]="'grab'"
+    (mousedown)="state.selectedEl()?.id === el.id ? startImageDrag($event, el) : null" />
+
+  <!-- ✅ תיקון placeholder תמונה:
+       הלוגו המקומי מוצג במקום האמוג'י 🖼️
+       שימי את הלוגו שלך בתיקיית assets
+       ואז הוא יופיע כאן אוטומטית -->
+       <div *ngIf="!el.content.url" class="img-ph">
+        <span class="img-ph-text">לחצי לבחירת תמונה</span>
+      </div>
+
+  <div *ngIf="el.content.overlayText" class="img-overlay"
+    [style.background]="el.content.overlayColor">
+    {{ el.content.overlayText }}
+  </div>
+</div>
+
+<!-- ==================== מוצר ==================== -->
+<div *ngIf="el.type === 'product'" class="el-product"
+  [style.background]="el.content.bgColor"
+  [style.font-family]="el.content.fontFamily"
+  [style.border-radius.px]="el.content.borderRadius">
+
+  <div class="prod-img"
+    (click)="!el.content.imageUrl ? triggerImageUpload(el, 'imageUrl') : null"
+    (mousedown)="el.content.imageUrl && state.selectedEl()?.id === el.id ? startImageDrag($event, el) : null">
+
+    <img *ngIf="el.content.imageUrl" [src]="el.content.imageUrl"
+      style="width:100%;height:100%"
+      [style.object-fit]="'cover'"
+      [style.object-position]="el.content.objectPosition || 'center'"
+      [style.cursor]="'grab'" />
+
+    <!-- ✅ תיקון placeholder מוצר — לוגו מקומי במקום אמוג'י -->
+    <div *ngIf="!el.content.imageUrl" class="prod-img-ph">
+      <small>לחצי להוסיף תמונה</small>
+    </div>
+  </div>
+
+  <div class="prod-body">
+    <div class="prod-name" [style.color]="el.content.nameColor"
+      *ngIf="state.editingTextId() !== el.id">{{ el.content.name }}</div>
+    <input *ngIf="state.editingTextId() === el.id" class="ie-dark"
+      [(ngModel)]="el.content.name"
+      (blur)="state.editingTextId.set(null)" (click)="$event.stopPropagation()" />
+
+    <div class="prod-desc" *ngIf="state.editingTextId() !== el.id">{{ el.content.desc }}</div>
+    <input *ngIf="state.editingTextId() === el.id" class="ie-dark"
+      [(ngModel)]="el.content.desc"
+      (blur)="state.editingTextId.set(null)" (click)="$event.stopPropagation()" />
+
+    <div class="prod-price" [style.color]="el.content.priceColor"
+      *ngIf="state.editingTextId() !== el.id">
+      {{ el.content.currency }}{{ el.content.price }}
+    </div>
+    <input *ngIf="state.editingTextId() === el.id"
+      type="number" [(ngModel)]="el.content.price" min="0"
+      class="ie-dark" style="width:80px"
+      (blur)="state.editingTextId.set(null)" (click)="$event.stopPropagation()" />
+
+    <button class="prod-btn" [style.background]="el.content.btnColor"
+      (click)="addToCartWithFeedback(el, $event)">
+      {{ el.content.btnText }}
+    </button>
+
+    <div *ngIf="cartFeedback.get(el.id)"
+      style="text-align:center; color:green; font-size:0.75rem; padding:4px;">
+      ✓ נוסף לסל!
+    </div>
+  </div>
+</div>
+
+<!-- ==================== סל קניות ==================== -->
+<div *ngIf="el.type === 'cart'" class="el-cart" [style.background]="el.content.bgColor">
+  <div class="cart-title">🛒 {{ el.content.title }}</div>
+  <div *ngIf="state.cartItems().length === 0" class="cart-empty">הסל ריק</div>
+  <div *ngFor="let item of state.cartItems(); let i = index" class="cart-row">
+    <span class="cart-name">{{ item.name }}</span>
+    <span class="cart-qty">×{{ item.qty }}</span>
+    <span class="cart-price">₪{{ item.price * item.qty }}</span>
+    <button class="cart-del" (click)="state.removeFromCart(i); $event.stopPropagation()">✕</button>
+  </div>
+  <div *ngIf="state.cartItems().length > 0" class="cart-total" [style.color]="el.content.accentColor">
+    סה"כ: ₪{{ state.cartTotal() }}
+  </div>
+  <button *ngIf="state.cartItems().length > 0" class="cart-checkout"
+    [style.background]="el.content.accentColor">
+    לתשלום →
+  </button>
+</div>
+
+<!-- ==================== אודות ==================== -->
+<div *ngIf="el.type === 'about'" class="el-about" [style.background]="el.content.bgColor">
+  <div class="about-logo"
+    (click)="!el.content.logoUrl ? triggerImageUpload(el, 'logoUrl') : null"
+    (mousedown)="el.content.logoUrl && state.selectedEl()?.id === el.id ? startImageDrag($event, el) : null">
+    <img *ngIf="el.content.logoUrl" [src]="el.content.logoUrl"
+      style="width:100%;height:100%;object-fit:cover"
+      [style.object-position]="el.content.objectPosition || 'center'"
+      [style.cursor]="'grab'" />
+    <div *ngIf="!el.content.logoUrl" class="about-logo-ph">🏢</div>
+  </div>
+  <div class="about-divider"></div>
+  <div class="about-body">
+    <div class="about-name" *ngIf="state.editingTextId() !== el.id" [style.color]="el.content.textColor">{{ el.content.businessName }}</div>
+    <input *ngIf="state.editingTextId() === el.id" class="ie-dark" [(ngModel)]="el.content.businessName" placeholder="שם העסק" (click)="$event.stopPropagation()" />
+
+    <div class="about-desc" *ngIf="state.editingTextId() !== el.id" [style.color]="el.content.textColor">{{ el.content.description }}</div>
+    <input *ngIf="state.editingTextId() === el.id" class="ie-dark" [(ngModel)]="el.content.description" placeholder="תיאור" (click)="$event.stopPropagation()" />
+
+    <div class="about-details">
+      <div class="about-detail-item" *ngIf="state.editingTextId() !== el.id" [style.color]="el.content.textColor"><span>📞</span> {{ el.content.phone }}</div>
+      <input *ngIf="state.editingTextId() === el.id" class="ie-dark" [(ngModel)]="el.content.phone" placeholder="טלפון" (click)="$event.stopPropagation()" />
+
+      <div class="about-detail-item" *ngIf="state.editingTextId() !== el.id" [style.color]="el.content.textColor"><span>✉️</span> {{ el.content.email }}</div>
+      <input *ngIf="state.editingTextId() === el.id" class="ie-dark" [(ngModel)]="el.content.email" placeholder="מייל" (click)="$event.stopPropagation()" />
+
+      <div class="about-detail-item" *ngIf="state.editingTextId() !== el.id" [style.color]="el.content.textColor"><span>📍</span> {{ el.content.address }}</div>
+      <input *ngIf="state.editingTextId() === el.id" class="ie-dark" [(ngModel)]="el.content.address" placeholder="כתובת" (click)="$event.stopPropagation()" />
+    </div>
+  </div>
+</div>
+
+<!-- ==================== גלריה ==================== -->
+<!-- ✅ תיקון גלריה:
+     1. הוספנו כפתור "הוסף עוד" גם כשיש תמונות — לא רק כשהגלריה ריקה
+     2. אם הגלריה ריקה — מציג placeholder עם לחיצה להוספה
+     3. אם יש תמונות — מציג אותן + כפתור הוסף עוד בתחתית -->
+<div *ngIf="el.type === 'gallery'" class="el-gallery"
+  [class.layout-row]="el.content.layout === 'row'"
+  [class.layout-grid]="el.content.layout === 'grid'"
+  [style.gap.px]="el.content.gap">
+
+  <!-- placeholder כשאין תמונות -->
+  <div *ngIf="(el.content.images || []).length === 0" class="gallery-ph"
+    (click)="addGalleryImages(el)">
+    🖼️ לחצי להוסיף תמונות
+  </div>
+
+  <!-- התמונות הקיימות -->
+  <div *ngFor="let img of (el.content.images || []); let i = index"
+    class="gallery-img" [style.border-radius.px]="el.content.borderRadius">
+    <img [src]="img.url" />
+    <button class="gallery-del"
+      (click)="el.content.images.splice(i, 1); $event.stopPropagation()">✕</button>
+  </div>
+
+  <!-- ✅ כפתור הוסף עוד — מוצג גם כשיש תמונות -->
+  <div *ngIf="(el.content.images || []).length > 0"
+    class="gallery-add-more" (click)="addGalleryImages(el); $event.stopPropagation()">
+    <span>+</span>
+  </div>
+</div>
+
+<!-- ==================== וידאו ==================== -->
+<!-- ✅ תיקון וידאו:
+     1. placeholder קורא ל-triggerVideoUpload (ולא triggerImageUpload שהיה שגוי!)
+        triggerImageUpload מעלה תמונה — לוידאו צריך triggerVideoUpload
+     2. הוספנו אפשרות להדביק URL חיצוני (YouTube/Vimeo) ישירות מה-placeholder
+     3. הוספנו כפתור "החלף" כשיש וידאו -->
+<div *ngIf="el.type === 'video'" class="el-video">
+
+  <!-- וידאו מקומי שהועלה -->
+  <video *ngIf="el.content.localUrl" [src]="el.content.localUrl"
+    controls style="width:100%;height:100%"
+    [style.object-fit]="'cover'">
+  </video>
+
+  <!-- iframe לURL חיצוני (YouTube/Vimeo) -->
+  <iframe *ngIf="!el.content.localUrl && el.content.url"
+    [src]="el.content.url" frameborder="0" allowfullscreen
+    style="width:100%;height:100%">
+  </iframe>
+
+  <!-- placeholder כשאין וידאו — עם שתי אפשרויות -->
+  <div *ngIf="!el.content.localUrl && !el.content.url" class="video-ph">
+    <!-- ✅ תיקון: triggerVideoUpload במקום triggerImageUpload -->
+    <button class="video-ph-btn" (click)="triggerVideoUpload(el); $event.stopPropagation()">
+      📁 העלה מהמחשב
+    </button>
+    <span class="video-ph-or">או</span>
+    <!-- אפשרות להדביק URL חיצוני -->
+    <input class="video-ph-input"
+      [(ngModel)]="el.content.url"
+      placeholder="הדבק URL YouTube/Vimeo..."
+      (click)="$event.stopPropagation()"
+      (mousedown)="$event.stopPropagation()" />
+  </div>
+
+  <!-- כפתור החלפה כשיש וידאו -->
+  <button *ngIf="el.content.localUrl || el.content.url"
+    class="video-replace-btn"
+    (click)="el.content.localUrl = ''; el.content.url = ''; $event.stopPropagation()">
+    ✕ הסר וידאו
+  </button>
+</div>
+
+<!-- ==================== PDF ==================== -->
+<div *ngIf="el.type === 'pdf'" class="el-pdf">
+  <div *ngIf="el.content.url && pdfPages.length > 0" class="pdf-pages">
+    <img *ngFor="let page of pdfPages" [src]="page" class="pdf-page" />
+  </div>
+  <div *ngIf="el.content.url && pdfPages.length === 0" class="pdf-loading"
+    (click)="renderPdf(el.content.url)">
+    📄 לחצי לטעינת PDF
+  </div>
+  <div *ngIf="!el.content.url" class="pdf-ph" (click)="triggerPdfUpload(el)">
+    <span>📄</span>
+    <span>לחצי להעלאת PDF</span>
+  </div>
+</div>
+
+<!-- ==================== הורדת PDF ==================== -->
+<div *ngIf="el.type === 'pdf-download'" class="el-pdf-download">
+  <a *ngIf="el.content.url" [href]="el.content.url"
+    [download]="el.content.fileName"
+    (click)="$event.stopPropagation()">
+    <button [style.background]="el.content.btnColor"
+      [style.color]="el.content.textColor"
+      class="pdf-download-btn">
+      ⬇️ {{ el.content.btnText }}
+    </button>
+  </a>
+  <button *ngIf="!el.content.url"
+    class="pdf-download-btn pdf-ph-btn"
+    (click)="triggerPdfUpload(el)">
+    📄 לחצי להעלאת PDF
+  </button>
+</div>
+
+<!-- ==================== יצירת קשר ==================== -->
+<div *ngIf="el.type === 'contact'" class="el-contact" [style.background]="el.content.bgColor">
+  <h3 [style.color]="el.content.titleColor">{{ el.content.title }}</h3>
+  <input placeholder="שם מלא" disabled />
+  <input placeholder="כתובת מייל" disabled />
+  <textarea placeholder="הודעה..." disabled style="height:60px;resize:none;"></textarea>
+  <button [style.background]="el.content.btnColor">{{ el.content.btnText }}</button>
+</div>
+
+<!-- ==================== Navbar ==================== -->
+<div *ngIf="el.type === 'navbar'" class="el-navbar"
+  [style.background]="el.content.bgColor"
+  [style.outline]="el.content.sticky ? '2px dashed #f97316' : 'none'">
+  <span *ngIf="el.content.sticky" class="nb-sticky-badge">📌</span>
+
+  <!-- לוגו + שם ביחד -->
+  <div class="nb-brand-wrap">
+    <img *ngIf="el.content.logoUrl" [src]="el.content.logoUrl" class="nb-logo" />
+    <span class="nb-brand"
+      [style.color]="el.content.textColor"
+      [style.font-size.px]="el.content.fontSize || 16"
+      [style.font-weight]="el.content.fontWeight || 700">
+      {{ el.content.siteName }}
+    </span>
+  </div>
+  <span class="nb-brand"
+    [style.color]="el.content.textColor"
+    [style.font-size.px]="el.content.fontSize || 16"
+    [style.font-weight]="el.content.fontWeight || 700">
+    {{ el.content.siteName }}
+  </span>
+  <div class="nb-links">
+    <span *ngFor="let link of (el.content.links || [])"
+      class="nb-link"
+      [style.color]="el.content.textColor"
+      [style.font-size.px]="el.content.fontSize || 14"
+      [style.font-weight]="el.content.fontWeight || 400">
+      {{ link.label }}
+    </span>
+  </div>
+</div>
+
+<!-- ==================== הזמנת תור ==================== -->
+<div *ngIf="el.type === 'booking'" class="el-booking" [style.background]="el.content.bgColor">
+  <h3 [style.color]="el.content.titleColor">{{ el.content.title }}</h3>
+  <p class="booking-subtitle">{{ el.content.subtitle }}</p>
+  <div class="booking-form">
+    <input *ngIf="el.content.fields?.name"  type="text" placeholder="שם מלא" disabled class="booking-input" />
+    <input *ngIf="el.content.fields?.phone" type="tel"  placeholder="טלפון"  disabled class="booking-input" />
+    <input *ngIf="el.content.fields?.date"  type="date"                       disabled class="booking-input" />
+    <input *ngIf="el.content.fields?.time"  type="time"                       disabled class="booking-input" />
+    <textarea *ngIf="el.content.fields?.note" placeholder="הערה" disabled class="booking-input booking-textarea"></textarea>
+    <button [style.background]="el.content.btnColor" class="booking-btn">{{ el.content.btnText }}</button>
+  </div>
+</div>
+
+<!-- ==================== המלצה ==================== -->
+<div *ngIf="el.type === 'testimonial'" class="el-testimonial" [style.background]="el.content.bgColor">
+  <div class="t-quote" [style.color]="el.content.accentColor">"</div>
+  <p *ngIf="state.editingTextId() !== el.id"
+    [style.color]="el.content.textColor"
+    [innerHTML]="el.content.htmlText || el.content.text">
+  </p>
+  <textarea *ngIf="state.editingTextId() === el.id"
+    class="ie-textarea-sm" [(ngModel)]="el.content.text"
+    (blur)="state.editingTextId.set(null)" (click)="$event.stopPropagation()">
+  </textarea>
+  <div class="t-author" [style.color]="el.content.textColor">
+    <strong>{{ el.content.author }}</strong> · {{ el.content.role }}
+  </div>
+</div>
+
+<!-- ==================== מפריד ==================== -->
+<div *ngIf="el.type === 'divider'" class="el-divider"
+  [style.border-top]="el.content.thickness + 'px ' + el.content.style + ' ' + el.content.color">
+</div>
+
+<!-- ==================== ריווח ==================== -->
+<div *ngIf="el.type === 'spacer'" class="el-spacer">
+  <span *ngIf="state.selectedEl()?.id === el.id">ריווח</span>
+</div>
+
+<!-- ==================== רשתות חברתיות ==================== -->
+<div *ngIf="el.type === 'social'" class="el-social" [style.background]="el.content.bgColor">
+  <span *ngFor="let link of (el.content.links || [])"
+    class="social-icon"
+    [style.color]="el.content.iconColor"
+    [style.font-size.px]="el.content.size">
+    {{ link.icon }}
+  </span>
+</div>
+
+<!-- ==================== מחירון ==================== -->
+<div *ngIf="el.type === 'pricing'" class="el-pricing"
+  [class.pricing-hl]="el.content.highlighted"
+  [style.background]="el.content.highlighted ? el.content.btnColor : el.content.bgColor">
+  <div class="pr-title" [style.color]="el.content.highlighted ? '#fff' : '#111'">{{ el.content.title }}</div>
+  <div class="pr-price" [style.color]="el.content.highlighted ? '#fff' : el.content.btnColor">
+    ₪{{ el.content.price }}<span class="pr-period">/{{ el.content.period }}</span>
+  </div>
+  <ul class="pr-features">
+    <li *ngFor="let f of (el.content.features || [])" [style.color]="el.content.highlighted ? '#fff' : '#555'">✓ {{ f }}</li>
+  </ul>
+  <button class="pr-btn"
+    [style.background]="el.content.highlighted ? '#fff' : el.content.btnColor"
+    [style.color]="el.content.highlighted ? el.content.btnColor : '#fff'">
+    {{ el.content.btnText }}
+  </button>
+</div>
+
+<!-- ==================== מפה ==================== -->
+<div *ngIf="el.type === 'map'" class="el-map">
+  <div class="map-ph">📍 {{ el.content.address }}</div>
+</div>
+
+<!-- ==================== ספירה לאחור ==================== -->
+<div *ngIf="el.type === 'countdown'" class="el-countdown" [style.background]="el.content.bgColor">
+  <div class="cd-title" [style.color]="el.content.textColor">{{ el.content.title }}</div>
+  <div class="cd-boxes">
+    <div class="cd-box" [style.border-color]="el.content.accentColor">
+      <span [style.color]="el.content.accentColor">00</span>
+      <small [style.color]="el.content.textColor">ימים</small>
+    </div>
+    <div class="cd-box" [style.border-color]="el.content.accentColor">
+      <span [style.color]="el.content.accentColor">00</span>
+      <small [style.color]="el.content.textColor">שעות</small>
+    </div>
+    <div class="cd-box" [style.border-color]="el.content.accentColor">
+      <span [style.color]="el.content.accentColor">00</span>
+      <small [style.color]="el.content.textColor">דקות</small>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== צורות גיאומטריות SVG ==================== -->
+<svg *ngIf="el.type === 'shape'"
+  [attr.width]="el.width" [attr.height]="el.height"
+  style="display:block;overflow:visible">
+
+  <ellipse *ngIf="el.shapeType === 'circle' || el.shapeType === 'ellipse'"
+    [attr.cx]="el.width/2" [attr.cy]="el.height/2"
+    [attr.rx]="el.width/2  - (el.content.strokeWidth||0)/2"
+    [attr.ry]="el.height/2 - (el.content.strokeWidth||0)/2"
+    [attr.fill]="el.content.fillColor"
+    [attr.stroke]="el.content.strokeColor"
+    [attr.stroke-width]="el.content.strokeWidth||0" />
+
+  <rect *ngIf="el.shapeType === 'rect'"
+    [attr.x]="(el.content.strokeWidth||0)/2"
+    [attr.y]="(el.content.strokeWidth||0)/2"
+    [attr.width]="el.width  - (el.content.strokeWidth||0)"
+    [attr.height]="el.height - (el.content.strokeWidth||0)"
+    [attr.rx]="0"
+    [attr.fill]="el.content.fillColor"
+    [attr.stroke]="el.content.strokeColor"
+    [attr.stroke-width]="el.content.strokeWidth||0" />
+
+  <rect *ngIf="el.shapeType === 'rect-rounded'"
+    [attr.x]="(el.content.strokeWidth||0)/2"
+    [attr.y]="(el.content.strokeWidth||0)/2"
+    [attr.width]="el.width  - (el.content.strokeWidth||0)"
+    [attr.height]="el.height - (el.content.strokeWidth||0)"
+    [attr.rx]="el.content.borderRadius || 12"
+    [attr.fill]="el.content.fillColor"
+    [attr.stroke]="el.content.strokeColor"
+    [attr.stroke-width]="el.content.strokeWidth||0" />
+
+  <line *ngIf="el.shapeType === 'line-h'"
+    x1="0" [attr.y1]="el.height/2"
+    [attr.x2]="el.width" [attr.y2]="el.height/2"
+    [attr.stroke]="el.content.strokeColor || el.content.fillColor"
+    [attr.stroke-width]="Math.max(el.content.strokeWidth||2, 2)" />
+
+  <line *ngIf="el.shapeType === 'line-v'"
+    [attr.x1]="el.width/2" y1="0"
+    [attr.x2]="el.width/2" [attr.y2]="el.height"
+    [attr.stroke]="el.content.strokeColor || el.content.fillColor"
+    [attr.stroke-width]="Math.max(el.content.strokeWidth||2, 2)" />
+
+  <path *ngIf="!['circle','ellipse','rect','rect-rounded','line-h','line-v'].includes(el.shapeType || '')"
+    [attr.d]="getShapePath(el)"
+    [attr.fill]="el.content.fillColor"
+    [attr.stroke]="el.content.strokeColor"
+    [attr.stroke-width]="el.content.strokeWidth||0" />
+
+</svg>

@@ -1,0 +1,152 @@
+/* site-element.css */
+:host { display: block; width: 100%; height: 100%; }
+
+/* כל האלמנטים — direction rtl */
+.el-hero, .el-text, .el-button, .el-image, .el-product,
+.el-cart, .el-about, .el-gallery, .el-video, .el-contact,
+.el-navbar, .el-testimonial, .el-booking, .el-social,
+.el-pricing, .el-map, .el-countdown, .el-divider, .el-spacer,
+.el-pdf-download { direction: rtl; }
+
+/* HERO */
+.el-hero { width:100%;height:100%;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden; }
+.hero-overlay { position:absolute;inset:0; }
+.hero-inner { position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;padding:1.2rem; }
+.el-hero h2 { font-size:1.8rem; }
+.hero-cta { border:none;color:white;padding:10px 24px;border-radius:8px;font-size:1rem;cursor:pointer; }
+.hero-cta:hover { opacity:0.9; }
+
+/* TEXT */
+.el-text { width:100%;height:100%;padding:10px 14px;overflow:hidden; }
+
+/* BUTTON */
+.el-button { width:100%;height:100%;display:flex;align-items:center;justify-content:center; }
+
+/* IMAGE */
+.el-image { width:100%;height:100%;overflow:hidden;position:relative; }
+.el-image img { width:100%;height:100%;object-fit:cover; }
+.img-overlay { position:absolute;bottom:0;left:0;right:0;padding:8px 12px;font-size:0.9rem;text-align:center;color:white; }
+
+/* NAVBAR */
+.el-navbar { width:100%;height:100%;display:flex;align-items:center;padding:0 1.5rem;gap:1.5rem; }
+.nb-brand { font-weight:700;font-size:1rem; }
+.nb-links { display:flex;gap:1.2rem;flex:1; }
+.nb-link { font-size:0.88rem;cursor:pointer;opacity:0.85; }
+.nb-link:hover { opacity:1; }
+
+/* PRODUCT */
+.el-product { width:100%;height:100%;display:flex;flex-direction:column;overflow:hidden; }
+.prod-img { flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden; }
+.prod-img-ph { font-size:2rem; }
+.prod-body { padding:8px 10px; }
+.prod-name { font-weight:600;font-size:0.86rem;margin-bottom:2px; }
+.prod-desc { font-size:0.7rem;margin-bottom:4px;opacity:0.6; }
+.prod-price { font-weight:700;font-size:0.94rem;margin-bottom:6px; }
+.prod-btn { width:100%;border:none;color:white;padding:6px;border-radius:7px;font-size:0.76rem;cursor:pointer; }
+
+/* CART */
+.el-cart { width:100%;height:100%;padding:12px;display:flex;flex-direction:column;gap:5px;overflow:hidden; }
+.cart-title { font-weight:700;font-size:0.9rem;border-bottom:1px solid rgba(0,0,0,0.1);padding-bottom:6px; }
+.cart-empty { font-size:0.8rem;text-align:center;flex:1;display:flex;align-items:center;justify-content:center;opacity:0.5; }
+.cart-row { display:flex;align-items:center;gap:6px;font-size:0.78rem; }
+.cart-name { flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+.cart-del { background:transparent;border:none;color:#ef4444;cursor:pointer; }
+.cart-total { font-weight:700;font-size:0.95rem;border-top:1px solid rgba(0,0,0,0.1);padding-top:6px; }
+.cart-checkout { width:100%;border:none;color:white;padding:8px;border-radius:7px;font-size:0.82rem;cursor:pointer;font-weight:600; }
+
+/* CONTACT */
+.el-contact { width:100%;height:100%;padding:1rem;display:flex;flex-direction:column;gap:8px;overflow:hidden; }
+.el-contact h3 { font-size:1rem;font-weight:600; }
+.el-contact input, .el-contact textarea { padding:8px;border:1px solid rgba(0,0,0,0.15);border-radius:6px;font-size:0.85rem;width:100%;font-family:inherit; }
+.el-contact textarea { height:60px;resize:none; }
+.el-contact button { padding:9px;color:white;border:none;border-radius:6px;font-size:0.85rem;font-weight:500;cursor:pointer; }
+
+/* BOOKING */
+.el-booking { width:100%;height:100%;padding:20px;display:flex;flex-direction:column;gap:10px;overflow:hidden; }
+.el-booking h3 { font-size:1.1rem;font-weight:700;margin:0; }
+.booking-subtitle { font-size:0.82rem;opacity:0.6;margin:0; }
+.booking-form { display:flex;flex-direction:column;gap:8px; }
+.booking-input { padding:8px 12px;border:1px solid rgba(0,0,0,0.15);border-radius:6px;font-size:0.85rem;width:100%;box-sizing:border-box;font-family:inherit; }
+.booking-textarea { height:70px;resize:none; }
+.booking-btn { width:100%;padding:10px;border:none;border-radius:6px;color:white;font-size:0.9rem;font-weight:600;cursor:pointer; }
+
+/* TESTIMONIAL */
+.el-testimonial { width:100%;height:100%;padding:16px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden; }
+.t-quote { font-size:4rem;line-height:1;opacity:0.15;font-family:Georgia,serif;position:absolute;top:4px;right:12px; }
+.t-author { font-size:0.76rem;margin-top:8px;opacity:0.6; }
+
+/* PRICING */
+.el-pricing { width:100%;height:100%;padding:16px;display:flex;flex-direction:column;gap:10px;overflow:hidden; }
+.pr-title { font-weight:700;font-size:0.9rem; }
+.pr-price { font-size:1.6rem;font-weight:800;line-height:1; }
+.pr-period { font-size:0.75rem;font-weight:400;opacity:0.6; }
+.pr-features { list-style:none;display:flex;flex-direction:column;gap:4px;flex:1; }
+.pr-features li { font-size:0.76rem; }
+.pr-btn { border:none;padding:8px;border-radius:7px;font-size:0.82rem;cursor:pointer;font-weight:600; }
+
+/* ABOUT */
+.el-about { width:100%;height:100%;display:flex;align-items:center;gap:28px;padding:24px 36px;box-sizing:border-box;overflow:hidden; }
+.about-logo { width:80px;height:80px;border-radius:50%;background:rgba(0,0,0,0.1);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0; }
+.about-logo img { width:100%;height:100%;object-fit:cover; }
+.about-logo-ph { font-size:2rem; }
+.about-divider { width:1px;height:60%;background:rgba(0,0,0,0.15);flex-shrink:0; }
+.about-body { flex:1;display:flex;flex-direction:column;gap:4px; }
+.about-name { font-weight:700;font-size:1rem; }
+.about-desc { font-size:0.8rem;opacity:0.6; }
+.about-details { display:flex;flex-direction:column;gap:4px;margin-top:4px; }
+.about-detail-item { font-size:0.75rem;opacity:0.7; }
+
+/* GALLERY */
+.el-gallery { width:100%;height:100%;display:flex;flex-wrap:wrap;overflow:hidden;align-content:flex-start; }
+.el-gallery.layout-row { flex-wrap:nowrap; }
+.gallery-img { position:relative;overflow:hidden;flex:1;min-width:60px;min-height:60px; }
+.gallery-img img { width:100%;height:100%;object-fit:cover;display:block; }
+
+/* VIDEO */
+.el-video { width:100%;height:100%;background:#111;overflow:hidden; }
+
+/* SOCIAL */
+.el-social { width:100%;height:100%;display:flex;align-items:center;justify-content:center;gap:12px; }
+.social-icon { text-decoration:none;line-height:1; }
+
+/* MAP */
+.el-map { width:100%;height:100%;overflow:hidden; }
+
+/* COUNTDOWN */
+.el-countdown { width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:12px;overflow:hidden; }
+.cd-title { font-weight:600;font-size:0.9rem; }
+.cd-boxes { display:flex;gap:10px; }
+.cd-box { display:flex;flex-direction:column;align-items:center;border:2px solid;border-radius:8px;padding:8px 12px; }
+.cd-box span { font-size:1.4rem;font-weight:800; }
+.cd-box small { font-size:0.65rem; }
+
+/* DIVIDER */
+.el-divider { width:100%;height:100%;display:flex;align-items:center; }
+
+/* SPACER */
+.el-spacer { width:100%;height:100%; }
+
+/* PDF DOWNLOAD */
+.el-pdf-download { width:100%;height:100%;display:flex;align-items:center;justify-content:center; }
+.pdf-download-btn { width:100%;height:100%;border:none;border-radius:8px;cursor:pointer;font-size:1rem;font-weight:600; }
+
+/* SUCCESS */
+.sv-success { color:#22c55e;font-size:0.95rem;font-weight:600;text-align:center;padding:12px; }
+
+
+/* ===== NAVBAR LOGO ===== */
+/* עטיפה ללוגו + שם — ביחד בצד ימין */
+.nb-brand-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* לוגו הnavbar — גובה קבוע כדי שיתאים לגובה הbar */
+.nb-logo {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
+  max-width: 120px;
+}

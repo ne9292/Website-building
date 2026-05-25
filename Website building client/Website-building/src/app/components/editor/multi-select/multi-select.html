@@ -1,0 +1,58 @@
+<!-- ============================================================ -->
+<!-- multi-select.html                                             -->
+<!-- מיקום: src/app/components/editor/multi-select/multi-select.html -->
+<!-- ============================================================ -->
+
+<!-- מלבן הבחירה הכתום — מוצג רק כשמצייר -->
+<div *ngIf="selectionBox && (selectionBox.w > 5 || selectionBox.h > 5)"
+  class="selection-box"
+  [style.left.px]="selectionBox.x"
+  [style.top.px]="selectionBox.y"
+  [style.width.px]="selectionBox.w"
+  [style.height.px]="selectionBox.h">
+</div>
+
+<!-- תפריט פעולות — מוצג כשיש 2+ אלמנטים נבחרים -->
+<div *ngIf="selectedEls.length > 1"
+  class="multi-toolbar"
+  (click)="$event.stopPropagation()"
+  (mousedown)="$event.stopPropagation()">
+
+  <span class="multi-count">{{ selectedEls.length }} נבחרו</span>
+  <div class="multi-sep"></div>
+
+  <!-- יישור אופקי -->
+  <span class="multi-label">יישור:</span>
+  <button (click)="alignSelected('left')"   title="יישר לשמאל">⬛←</button>
+  <button (click)="alignSelected('center')" title="מרכז אופקי">↔</button>
+  <button (click)="alignSelected('right')"  title="יישר לימין">→⬛</button>
+  <div class="multi-sep"></div>
+
+  <!-- יישור אנכי -->
+  <button (click)="alignSelected('top')"    title="יישר למעלה">⬛↑</button>
+  <button (click)="alignSelected('middle')" title="מרכז אנכי">↕</button>
+  <button (click)="alignSelected('bottom')" title="יישר למטה">↓⬛</button>
+  <div class="multi-sep"></div>
+
+  <!-- פיזור שווה — רק כשיש 3+ -->
+  <ng-container *ngIf="selectedEls.length >= 3">
+    <span class="multi-label">פיזור:</span>
+    <button (click)="distributeSelected('horizontal')" title="פזר אופקי">↔↔</button>
+    <button (click)="distributeSelected('vertical')"   title="פזר אנכי">↕↕</button>
+    <div class="multi-sep"></div>
+  </ng-container>
+
+  <!-- שכבות -->
+  <button (click)="bringForwardSelected()" title="הבא קדימה">⬆</button>
+  <button (click)="sendBackwardSelected()" title="שלח אחורה">⬇</button>
+  <div class="multi-sep"></div>
+
+  <!-- פעולות -->
+  <button (click)="duplicateSelected()" title="שכפל הכל">⧉ שכפל</button>
+  <button class="multi-del" (click)="deleteSelected()" title="מחק הכל">🗑 מחק</button>
+  <div class="multi-sep"></div>
+
+  <!-- ביטול בחירה -->
+  <button (click)="clearSelection()" title="בטל בחירה">✕</button>
+
+</div>

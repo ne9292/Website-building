@@ -1,0 +1,8 @@
+<!-- app.html -->
+
+<!-- navbar — מוצג רק כשלא בדף site-viewer -->
+<app-navbar *ngIf="!isSiteViewer()"></app-navbar>
+
+<div class="main-content" [class.no-navbar]="isSiteViewer()">
+  <router-outlet></router-outlet>
+</div>

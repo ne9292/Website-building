@@ -1,0 +1,64 @@
+<!-- ai-generator.html -->
+
+<div class="ai-overlay" (click)="onClose()">
+    <div class="ai-modal" (click)="$event.stopPropagation()">
+  
+      <!-- כותרת -->
+      <div class="ai-header">
+        <div class="ai-title">
+          <span class="ai-icon">✨</span>
+          <span>יצירת אתר עם AI</span>
+        </div>
+        <button class="ai-close" (click)="onClose()">✕</button>
+      </div>
+  
+      <!-- שלב 1 — קלט -->
+      <div *ngIf="step() === 'input'" class="ai-body">
+        <p class="ai-desc">תארי את העסק שלך ו-AI ייצור אתר מלא ומעוצב</p>
+  
+        <div class="ai-examples">
+          <span class="ai-ex-label">לדוגמה:</span>
+          <button class="ai-ex" (click)="prompt = 'עסק של ציפורניים וטיפוח לנשים'">💅 ציפורניים</button>
+          <button class="ai-ex" (click)="prompt = 'מסעדה איטלקית משפחתית'">🍕 מסעדה</button>
+          <button class="ai-ex" (click)="prompt = 'מאמן כושר אישי'">💪 כושר</button>
+          <button class="ai-ex" (click)="prompt = 'עורך דין'">⚖️ עורך דין</button>
+        </div>
+  
+        <textarea
+          class="ai-input"
+          [(ngModel)]="prompt"
+          placeholder="תארי את העסק שלך — מה הוא עושה, לאיזה קהל, מה הסגנון..."
+          rows="4">
+        </textarea>
+  
+        <div *ngIf="error()" class="ai-error">{{ error() }}</div>
+  
+        <button class="ai-btn" (click)="generate()" [disabled]="!prompt.trim()">
+          ✨ צור אתר
+        </button>
+      </div>
+  
+      <!-- שלב 2 — יוצר -->
+      <div *ngIf="step() === 'generating'" class="ai-body ai-generating">
+        <div class="ai-spinner">
+          <div class="ai-spinner-ring"></div>
+          <span class="ai-spinner-icon">✨</span>
+        </div>
+        <p class="ai-status">{{ statusMsg() }}</p>
+        <div class="ai-progress-bar">
+          <div class="ai-progress-fill" [style.width.%]="progress()"></div>
+        </div>
+        <p class="ai-progress-text">{{ progress() }}%</p>
+      </div>
+  
+      <!-- שלב 3 — סיים -->
+      <div *ngIf="step() === 'done'" class="ai-body ai-done">
+        <div class="ai-done-icon">🎉</div>
+        <h3>האתר מוכן!</h3>
+        <p>האלמנטים נוספו לעורך. תוכלי לערוך ולהתאים אישית.</p>
+        <button class="ai-btn" (click)="onClose()">סגור ועבור לעורך</button>
+        <button class="ai-btn ai-btn-secondary" (click)="step.set('input'); prompt = ''">צור אתר חדש</button>
+      </div>
+  
+    </div>
+  </div>

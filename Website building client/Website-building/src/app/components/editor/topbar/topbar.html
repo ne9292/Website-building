@@ -1,0 +1,51 @@
+<div class="topbar-nav">
+
+  <input class="site-title-input"
+    [value]="state.selectedPage()?.title || state.site()?.siteName"
+    (blur)="onTitleBlur($event)"
+    (keydown.enter)="$event.target.blur()" />
+
+  <button class="btn-back" (click)="goBack()">← חזרה</button>
+
+  <span class="site-title">{{ state.site()?.siteName }}</span>
+
+  <div class="nav-actions">
+
+    <button class="btn-undo" (click)="state.undo()">↩ בטל</button>
+
+    <button class="btn-ai" (click)="showAi = true">✨ AI</button>
+
+    <!-- כפתור פרסום -->
+    <ng-container *ngIf="!state.site()?.isPublished">
+      <button class="btn-publish" (click)="publish()">🔗 פרסם אתר</button>
+    </ng-container>
+
+    <ng-container *ngIf="state.site()?.isPublished">
+      <!-- הצגת קישור -->
+      <div class="publish-bar">
+        <span class="site-link" (click)="showLink = !showLink">🌐 האתר פעיל</span>
+        <div class="link-popup" *ngIf="showLink">
+          <input class="link-input" [value]="siteUrl" readonly (click)="$event.target.select()" />
+          <button class="btn-copy" (click)="copyLink()">
+            {{ linkCopied ? '✓ הועתק' : 'העתק' }}
+          </button>
+          <button class="btn-unpublish" (click)="unpublish()">בטל פרסום</button>
+        </div>
+      </div>
+    </ng-container>
+
+    <button class="btn-save"
+      [class.saving]="state.isSaving()"
+      [class.saved]="state.saveSuccess() === true"
+      [class.save-error]="state.saveSuccess() === false"
+      (click)="state.savePage()">
+      <span *ngIf="!state.isSaving() && state.saveSuccess() === null">שמור</span>
+      <span *ngIf="state.isSaving()">שומר...</span>
+      <span *ngIf="state.saveSuccess() === true">✓ נשמר</span>
+      <span *ngIf="state.saveSuccess() === false">✕ שגיאה</span>
+    </button>
+
+  </div>
+
+  <app-ai-generator *ngIf="showAi" (close)="showAi = false" />
+</div>

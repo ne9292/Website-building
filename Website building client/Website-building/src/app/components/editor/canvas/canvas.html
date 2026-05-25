@@ -1,0 +1,104 @@
+<!-- canvas.html — מיקום: src/app/components/editor/canvas/canvas.html -->
+<!--
+  הסברים: הערות ה-HTML נמצאות מחוץ לתגיות (לא בתוכן) כי Angular לא מקבל הערות בתוך תגית פתוחה
+-->
+
+<!-- אזור הגלילה הראשי — תומך ב-drag & drop מה-sidebar -->
+<div class="canvas-scroll"
+  (click)="onCanvasClick($event)"
+  [class.drag-over]="isDragOver"
+  (dragover)="onDragOver($event)"
+  (dragleave)="onDragLeave()"
+  (drop)="onDrop($event)">
+
+  <!-- הלוח הלבן — mousedown על רקע ריק מפעיל בחירה מרובה -->
+  <div class="canvas-inner"
+    (mousedown)="multiSelect?.startSelection($event, canvasInnerEl, scrollEl)">
+
+    <!-- קומפוננטת הבחירה המרובה — מצייר מלבן כתום בגרירה -->
+    <app-multi-select [elements]="state.elements()" />
+
+    <!-- מצב: אין דף נבחר כלל -->
+    <div *ngIf="!state.selectedPage()" class="empty-state" (click)="$event.stopPropagation()">
+      <div class="empty-icon">📄</div>
+      <p>אין דף נבחר</p>
+      <button class="btn-add-first-page" (click)="openPagePicker()">+ הוסף דף</button>
+    </div>
+
+    <!-- מצב: דף קיים אבל ריק -->
+    <div *ngIf="state.selectedPage() && state.elements().length === 0" class="empty-canvas">
+      <div class="empty-icon">🎨</div>
+      <p>גררי רכיב מהסרגל לכאן</p>
+      <p class="empty-sub">או לחצי על רכיב בצד ימין</p>
+    </div>
+
+    <!--
+      לולאת כל האלמנטים על הקנבס — ממוינים לפי zIndex
+      שים לב: אין הערות בתוך התגית הפתוחה — Angular לא מקבל את זה!
+      כל ההסברים נמצאים לפני/אחרי האלמנט.
+
+      תיקונים על כל אלמנט:
+      1. [class.multi-selected] — סימון אלמנטים שנבחרו בגרירה (CSS ב-canvas.css)
+      2. [style.position] — navbar sticky מקבל 'sticky', שאר 'absolute'
+      3. [style.top] — navbar sticky מקבל '0', שאר el.y
+      4. [style.outline] — הגבול שהמשתמש הגדיר ב-format-bar מוחל עכשיו!
+         השתמשנו ב-outline ולא ב-border כי border משנה גודל האלמנט
+         ומבלבל את חישובי ה-resize
+    -->
+    <div *ngFor="let el of state.sortedElements()"
+      class="canvas-el"
+      [class.selected]="state.selectedEl()?.id === el.id"
+      [class.multi-selected]="multiSelect?.isSelected(el)"
+      [style.left.px]="el.x"
+      [style.width.px]="el.width"
+      [style.height.px]="el.height"
+      [style.position]="el.type === 'navbar' && el.content?.sticky ? 'sticky' : 'absolute'"
+      [style.top]="el.type === 'navbar' && el.content?.sticky ? '0' : el.y + 'px'"
+      [style.z-index]="el.type === 'navbar' && el.content?.sticky ? 1000 : el.zIndex || 0"
+      [style.opacity]="el.opacity ?? 1"
+      [style.box-shadow]="shadowStyle(el)"
+      [style.border-radius.px]="el.border?.radius || 0"
+      [style.outline]="state.selectedEl()?.id !== el.id && (el.border?.width || 0) > 0
+        ? el.border.width + 'px ' + (el.border.style || 'solid') + ' ' + el.border.color
+        : null"
+      (click)="selectEl(el, $event)"
+      (dblclick)="startEditText(el, $event)"
+      (mousedown)="$event.stopPropagation();
+        multiSelect?.isSelected(el)
+          ? multiSelect?.startMultiDrag($event)
+          : startDrag($event, el)"
+      (contextmenu)="openContextMenu($event, el)">
+
+      <!-- el-body ממלא את כל האלמנט -->
+      <div class="el-body">
+        <app-canvas-element [el]="el" />
+      </div>
+
+      <!-- ידיות resize — מוצגות רק כשהאלמנט נבחר -->
+      <ng-container *ngIf="state.selectedEl()?.id === el.id">
+        <div class="resize-handle nw" (mousedown)="startResize($event, el, 'nw')"></div>
+        <div class="resize-handle ne" (mousedown)="startResize($event, el, 'ne')"></div>
+        <div class="resize-handle sw" (mousedown)="startResize($event, el, 'sw')"></div>
+        <div class="resize-handle se" (mousedown)="startResize($event, el, 'se')"></div>
+      </ng-container>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- תפריט קליק ימני — לא שונה -->
+<div *ngIf="contextMenu"
+  class="ctx-menu"
+  [style.left.px]="contextMenu.x"
+  [style.top.px]="contextMenu.y"
+  (click)="$event.stopPropagation()">
+  <div class="ctx-item" (click)="state.bringToFront(contextMenu.el);  closeContextMenu()">⬆⬆ הבא לקדמה</div>
+  <div class="ctx-item" (click)="state.bringForward(contextMenu.el);  closeContextMenu()">⬆ קדימה שכבה</div>
+  <div class="ctx-item" (click)="state.sendBackward(contextMenu.el);  closeContextMenu()">⬇ אחורה שכבה</div>
+  <div class="ctx-item" (click)="state.sendToBack(contextMenu.el);    closeContextMenu()">⬇⬇ שלח לאחור</div>
+  <div class="ctx-sep"></div>
+  <div class="ctx-item" (click)="state.duplicateElement(contextMenu.el); closeContextMenu()">⧉ שכפל (Ctrl+D)</div>
+  <div class="ctx-sep"></div>
+  <div class="ctx-item ctx-del" (click)="state.deleteElement(contextMenu.el.id); closeContextMenu()">🗑 מחק</div>
+</div>

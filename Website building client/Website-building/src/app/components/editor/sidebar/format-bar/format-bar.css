@@ -1,0 +1,229 @@
+/* ============================================================
+   format-bar.css
+   מיקום: src/app/components/editor/sidebar/format-bar/format-bar.css
+   ✅ תיקון: מערכת CSS אחת — הוסרו כל class-ים הישנים (fmt-*)
+   ✅ עיצוב: שחור/אפור/כתום במקום כחול
+   ============================================================ */
+
+   :host { display: contents; }
+
+   .format-bar {
+     display: flex;
+     flex-direction: column;
+     width: 100%;
+     overflow-y: auto;
+     overflow-x: hidden;
+     scrollbar-width: thin;
+     scrollbar-color: #444 transparent;
+   }
+   
+   /* ===== סקשן ===== */
+   .fp-section {
+     border-bottom: 1px solid #333;
+     padding: 10px 12px;
+   }
+   
+   .fp-title {
+     font-size: 10px;
+     color: #666;
+     margin-bottom: 8px;
+     display: flex;
+     align-items: center;
+     justify-content: space-between;
+     text-transform: uppercase;
+     letter-spacing: 0.5px;
+   }
+   
+   /* ===== שורת שדות ===== */
+   .fp-row {
+     display: flex;
+     align-items: center;
+     gap: 5px;
+     margin-bottom: 5px;
+   }
+   .fp-row:last-child { margin-bottom: 0; }
+   
+   .fp-field-wrap {
+     display: flex;
+     flex-direction: column;
+     gap: 2px;
+     flex: 1;
+   }
+   .fp-field-lbl { font-size: 9px; color: #666; }
+   
+   .fp-field {
+     display: flex;
+     align-items: center;
+     background: #333;
+     border: 1px solid #444;
+     border-radius: 3px;
+     padding: 3px 6px;
+     height: 26px;
+     transition: border-color 0.1s;
+   }
+   .fp-field:hover       { border-color: #555; }
+   /* ✅ כתום במקום כחול */
+   .fp-field:focus-within { border-color: #f97316; }
+   .fp-field input {
+     background: transparent;
+     border: none;
+     color: #cccccc;
+     font-size: 11px;
+     width: 100%;
+     outline: none;
+   }
+   
+   /* ===== שורת צבע ===== */
+   .fp-color-row {
+     display: flex;
+     align-items: center;
+     gap: 6px;
+     margin-bottom: 5px;
+   }
+   .fp-color-lbl {
+     font-size: 10px;
+     color: #666;
+     width: 36px;
+     text-align: right;
+     flex-shrink: 0;
+   }
+   .fp-color-field {
+     display: flex;
+     align-items: center;
+     gap: 6px;
+     background: #333;
+     border: 1px solid #444;
+     border-radius: 3px;
+     padding: 3px 7px;
+     flex: 1;
+     height: 26px;
+     cursor: pointer;
+     transition: border-color 0.1s;
+   }
+   .fp-color-field:hover { border-color: #555; }
+   .fp-color-dot {
+     width: 14px;
+     height: 14px;
+     border-radius: 2px;
+     border: 1px solid rgba(255,255,255,0.15);
+     flex-shrink: 0;
+     cursor: pointer;
+     padding: 0;
+   }
+   .fp-color-hex {
+     font-size: 11px;
+     color: #cccccc;
+     font-family: monospace;
+     flex: 1;
+   }
+   
+   /* ===== כפתורי יישור ===== */
+   .fp-align-row {
+     display: flex;
+     gap: 2px;
+     margin-bottom: 5px;
+   }
+   .fp-al {
+     width: 26px;
+     height: 26px;
+     background: #333;
+     border: 1px solid #3c3c3c;
+     border-radius: 3px;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     cursor: pointer;
+     color: #777;
+     font-size: 11px;
+     transition: all 0.1s;
+   }
+   .fp-al:hover { background: #3a3a3a; color: #ccc; }
+   /* ✅ כתום במקום כחול */
+   .fp-al.on    { background: rgba(249,115,22,0.15); border-color: rgba(249,115,22,0.4); color: #f97316; }
+   .fp-al.danger        { color: #c94f4f; }
+   .fp-al.danger:hover  { background: rgba(201,79,79,0.15); color: #e07070; }
+   
+   /* ===== כפתור רגיל ===== */
+   .fp-btn {
+     background: transparent;
+     border: 1px solid #3c3c3c;
+     color: #858585;
+     padding: 4px 8px;
+     border-radius: 3px;
+     cursor: pointer;
+     font-size: 11px;
+     transition: all 0.1s;
+     height: 26px;
+     display: flex;
+     align-items: center;
+     gap: 4px;
+   }
+   /* ✅ כתום במקום כחול */
+   .fp-btn:hover { background: #2a2d2e; color: #f97316; border-color: #f97316; }
+   
+   /* ===== select ===== */
+   .fp-select {
+     background: #333;
+     border: 1px solid #444;
+     border-radius: 3px;
+     color: #cccccc;
+     font-size: 11px;
+     height: 26px;
+     padding: 0 5px;
+     cursor: pointer;
+     flex: 1;
+   }
+   /* ✅ כתום במקום כחול */
+   .fp-select:focus { outline: none; border-color: #f97316; }
+   
+   /* ===== range ===== */
+   .fp-range {
+     width: 100%;
+     /* ✅ כתום במקום כחול */
+     accent-color: #f97316;
+     flex: 1;
+   }
+   
+   /* ===== upload ===== */
+   .fp-upload {
+     background: transparent;
+     border: 1px solid #3c3c3c;
+     color: #858585;
+     padding: 4px 8px;
+     border-radius: 3px;
+     cursor: pointer;
+     font-size: 11px;
+     height: 26px;
+     display: flex;
+     align-items: center;
+     gap: 4px;
+     transition: all 0.1s;
+     width: 100%;
+   }
+   /* ✅ כתום במקום כחול */
+   .fp-upload:hover { background: #2a2d2e; color: #f97316; border-color: #f97316; }
+   
+   /* ===== שם האלמנט ===== */
+   .fp-el-name {
+     font-size: 12px;
+     color: #cccccc;
+     font-weight: 500;
+     padding: 10px 12px 6px;
+     border-bottom: 1px solid #333;
+     display: flex;
+     align-items: center;
+     justify-content: space-between;
+   }
+   .fp-el-type {
+     font-size: 10px;
+     color: #666;
+     background: #333;
+     padding: 2px 6px;
+     border-radius: 2px;
+   }
+
+   .nb-logo {
+    height: 36px;
+    width: auto;
+    object-fit: contain;
+  }

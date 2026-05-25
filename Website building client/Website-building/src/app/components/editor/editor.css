@@ -1,0 +1,26 @@
+/* ============================================================
+   editor.css
+   מיקום: src/app/components/editor/editor.css
+   ============================================================ */
+
+/* איפוס גלובלי רק בתוך העורך */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* עטיפת כל העורך — גובה מלא של המסך */
+.editor-wrap {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  user-select: none; /* מונע בחירת טקסט בגרירה */
+  background: #1e1e1e;
+}
+
+/* חלק התוכן הראשי — canvas + sidebar זה לצד זה */
+.editor-main {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0; /* חשוב ל-flexbox — מאפשר כיווץ */
+}

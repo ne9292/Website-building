@@ -1,0 +1,279 @@
+<!-- site-element.html — כל האלמנטים לגולשים, פעילים -->
+
+<!-- HERO -->
+<div *ngIf="el.type === 'hero'" class="el-hero"
+  [style.background]="el.content.bgImage
+    ? 'url(' + el.content.bgImage + ') ' + (el.content.bgPosition || 'center') + '/cover'
+    : el.content.bgColor">
+  <div *ngIf="el.content.bgImage" class="hero-overlay"
+    [style.background]="'rgba(0,0,0,' + el.content.overlayOpacity + ')'"></div>
+  <div class="hero-inner">
+    <h2 [style.color]="el.content.textColor">{{ el.content.title }}</h2>
+    <p  [style.color]="el.content.textColor">{{ el.content.subtitle }}</p>
+    <button *ngIf="el.content.showBtn"
+      [style.background]="el.content.btnColor"
+      class="hero-cta"
+      (click)="onBtnClick(el)">
+      {{ el.content.btnText }}
+    </button>
+  </div>
+</div>
+
+<!-- TEXT -->
+<div *ngIf="el.type === 'text'" class="el-text"
+  [style.background]="el.content.bgColor"
+  [style.font-size.px]="el.content.fontSize"
+  [style.color]="el.content.color"
+  [style.text-align]="el.content.align"
+  [style.line-height]="el.content.lineHeight"
+  [innerHTML]="el.content.htmlText || el.content.text">
+</div>
+
+<!-- BUTTON -->
+<div *ngIf="el.type === 'button'" class="el-button">
+  <button
+    [style.background]="el.content.bgColor"
+    [style.color]="el.content.textColor"
+    [style.font-size.px]="el.content.fontSize"
+    [style.border-radius.px]="el.content.radius"
+    [style.width]="'100%'"
+    [style.height]="'100%'"
+    [style.border]="'none'"
+    [style.cursor]="'pointer'"
+    (click)="onBtnClick(el)">
+    {{ el.content.label }}
+  </button>
+</div>
+
+<!-- IMAGE -->
+<div *ngIf="el.type === 'image'" class="el-image"
+  [style.border-radius.px]="el.content.borderRadius">
+  <img *ngIf="el.content.url" [src]="el.content.url"
+    [style.object-fit]="el.content.objectFit"
+    [style.object-position]="el.content.objectPosition" />
+  <div *ngIf="el.content.overlayText" class="img-overlay"
+    [style.background]="el.content.overlayColor">
+    {{ el.content.overlayText }}
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<!-- ✅ תיקון: הוסף לוגו בגודל מוגבל + שם האתר ביחד -->
+<div *ngIf="el.type === 'navbar'" class="el-navbar"
+  [style.background]="el.content.bgColor"
+  [style.position]="el.content.sticky ? 'sticky' : 'relative'"
+  [style.top]="el.content.sticky ? '0' : null"
+  [style.width]="el.content.sticky ? '100%' : null"
+  [style.z-index]="el.content.sticky ? '1000' : null">
+
+  <!-- לוגו + שם האתר ביחד בצד ימין -->
+  <div class="nb-brand-wrap">
+    <img *ngIf="el.content.logoUrl"
+      [src]="el.content.logoUrl"
+      class="nb-logo"
+      alt="לוגו" />
+    <span class="nb-brand"
+      [style.color]="el.content.textColor"
+      [style.font-size.px]="el.content.fontSize || 16"
+      [style.font-weight]="el.content.fontWeight || 700">
+      {{ el.content.siteName }}
+    </span>
+  </div>
+
+  <div class="nb-links">
+    <span *ngFor="let link of el.content.links"
+      class="nb-link"
+      [style.color]="el.content.textColor"
+      (click)="onNavClick(link)">
+      {{ link.label }}
+    </span>
+  </div>
+</div>
+
+<!-- PRODUCT -->
+<div *ngIf="el.type === 'product'" class="el-product"
+  [style.background]="el.content.bgColor"
+  [style.border-radius.px]="el.content.borderRadius">
+  <div class="prod-img">
+    <img *ngIf="el.content.imageUrl" [src]="el.content.imageUrl" style="width:100%;height:100%;object-fit:cover" />
+    <div *ngIf="!el.content.imageUrl" class="prod-img-ph">🛍️</div>
+  </div>
+  <div class="prod-body">
+    <div class="prod-name" [style.color]="el.content.nameColor">{{ el.content.name }}</div>
+    <div class="prod-desc">{{ el.content.desc }}</div>
+    <div class="prod-price" [style.color]="el.content.priceColor">{{ el.content.currency }}{{ el.content.price }}</div>
+    <button class="prod-btn" [style.background]="el.content.btnColor"
+      (click)="addToCart(el.content)">
+      {{ el.content.btnText }}
+    </button>
+  </div>
+</div>
+
+<!-- CART -->
+<div *ngIf="el.type === 'cart'" class="el-cart" [style.background]="el.content.bgColor">
+  <div class="cart-title">🛒 {{ el.content.title }}</div>
+  <div *ngIf="cartItems().length === 0" class="cart-empty">הסל ריק</div>
+  <div *ngFor="let item of cartItems(); let i = index" class="cart-row">
+    <span class="cart-name">{{ item.name }}</span>
+    <span class="cart-qty">×{{ item.qty }}</span>
+    <span class="cart-price">₪{{ item.price * item.qty }}</span>
+    <button class="cart-del" (click)="removeFromCart(i)">✕</button>
+  </div>
+  <div *ngIf="cartItems().length > 0" class="cart-total" [style.color]="el.content.accentColor">
+    סה"כ: ₪{{ cartTotal() }}
+  </div>
+  <button *ngIf="cartItems().length > 0" class="cart-checkout"
+    [style.background]="el.content.accentColor">
+    לתשלום →
+  </button>
+</div>
+
+<!-- CONTACT -->
+<div *ngIf="el.type === 'contact'" class="el-contact" [style.background]="el.content.bgColor">
+  <h3 [style.color]="el.content.titleColor">{{ el.content.title }}</h3>
+  <ng-container *ngIf="!contactSent">
+    <input [(ngModel)]="contactForm.name" placeholder="שם מלא" />
+    <input [(ngModel)]="contactForm.email" placeholder="כתובת מייל" />
+    <textarea [(ngModel)]="contactForm.message" placeholder="הודעה..." style="height:60px;resize:none;"></textarea>
+    <button [style.background]="el.content.btnColor" (click)="onSubmitContact()">{{ el.content.btnText }}</button>
+  </ng-container>
+  <div *ngIf="contactSent" class="sv-success">✓ ההודעה נשלחה!</div>
+</div>
+
+<!-- BOOKING -->
+<div *ngIf="el.type === 'booking'" class="el-booking" [style.background]="el.content.bgColor">
+  <h3 [style.color]="el.content.titleColor">{{ el.content.title }}</h3>
+  <p class="booking-subtitle">{{ el.content.subtitle }}</p>
+  <ng-container *ngIf="!bookingSent">
+    <div class="booking-form">
+      <input *ngIf="el.content.fields.name"  [(ngModel)]="bookingForm.name"  placeholder="שם מלא"  class="booking-input" />
+      <input *ngIf="el.content.fields.phone" [(ngModel)]="bookingForm.phone" placeholder="טלפון"   class="booking-input" />
+      <input *ngIf="el.content.fields.date"  [(ngModel)]="bookingForm.date"  type="date"            class="booking-input" />
+      <input *ngIf="el.content.fields.time"  [(ngModel)]="bookingForm.time"  type="time"            class="booking-input" />
+      <textarea *ngIf="el.content.fields.note" [(ngModel)]="bookingForm.note" placeholder="הערה" class="booking-input booking-textarea"></textarea>
+      <button [style.background]="el.content.btnColor" class="booking-btn" (click)="onSubmitBooking()">{{ el.content.btnText }}</button>
+    </div>
+  </ng-container>
+  <div *ngIf="bookingSent" class="sv-success">✓ ההזמנה נשלחה בהצלחה!</div>
+</div>
+
+<!-- TESTIMONIAL -->
+<div *ngIf="el.type === 'testimonial'" class="el-testimonial" [style.background]="el.content.bgColor">
+  <div class="t-quote" [style.color]="el.content.accentColor">"</div>
+  <p [style.color]="el.content.textColor" [innerHTML]="el.content.htmlText || el.content.text"></p>
+  <div class="t-author" [style.color]="el.content.textColor">
+    <strong>{{ el.content.author }}</strong> · {{ el.content.role }}
+  </div>
+</div>
+
+<!-- PRICING -->
+<div *ngIf="el.type === 'pricing'" class="el-pricing"
+  [style.background]="el.content.highlighted ? el.content.btnColor : el.content.bgColor">
+  <div class="pr-title">{{ el.content.title }}</div>
+  <div class="pr-price" [style.color]="el.content.btnColor">
+    ₪{{ el.content.price }}<span class="pr-period">/{{ el.content.period }}</span>
+  </div>
+  <ul class="pr-features">
+    <li *ngFor="let f of el.content.features">✓ {{ f }}</li>
+  </ul>
+  <button class="pr-btn" [style.background]="el.content.btnColor" [style.color]="'#fff'">
+    {{ el.content.btnText }}
+  </button>
+</div>
+
+<!-- ABOUT -->
+<div *ngIf="el.type === 'about'" class="el-about" [style.background]="el.content.bgColor">
+  <div class="about-logo">
+    <img *ngIf="el.content.logoUrl" [src]="el.content.logoUrl" />
+    <div *ngIf="!el.content.logoUrl" class="about-logo-ph">🏢</div>
+  </div>
+  <div class="about-divider"></div>
+  <div class="about-body">
+    <div class="about-name" [style.color]="el.content.textColor">{{ el.content.businessName }}</div>
+    <div class="about-desc" [style.color]="el.content.textColor">{{ el.content.description }}</div>
+    <div class="about-details">
+      <div class="about-detail-item" [style.color]="el.content.textColor">📞 {{ el.content.phone }}</div>
+      <div class="about-detail-item" [style.color]="el.content.textColor">✉️ {{ el.content.email }}</div>
+      <div class="about-detail-item" [style.color]="el.content.textColor">📍 {{ el.content.address }}</div>
+    </div>
+  </div>
+</div>
+
+<!-- GALLERY -->
+<div *ngIf="el.type === 'gallery'" class="el-gallery"
+  [class.layout-row]="el.content.layout === 'row'"
+  [style.gap.px]="el.content.gap">
+  <div *ngFor="let img of el.content.images" class="gallery-img"
+    [style.border-radius.px]="el.content.borderRadius">
+    <img [src]="img.url" />
+  </div>
+</div>
+
+<!-- VIDEO -->
+<div *ngIf="el.type === 'video'" class="el-video">
+  <video *ngIf="el.content.localUrl" [src]="el.content.localUrl" controls style="width:100%;height:100%"></video>
+  <iframe *ngIf="!el.content.localUrl && el.content.url" [src]="el.content.url" frameborder="0" allowfullscreen style="width:100%;height:100%"></iframe>
+</div>
+
+<!-- SOCIAL -->
+<div *ngIf="el.type === 'social'" class="el-social" [style.background]="el.content.bgColor">
+  <a *ngFor="let link of el.content.links" [href]="link.url || '#'" target="_blank"
+    class="social-icon" [style.color]="el.content.iconColor" [style.font-size.px]="el.content.size">
+    {{ link.icon }}
+  </a>
+</div>
+
+<!-- MAP -->
+<div *ngIf="el.type === 'map'" class="el-map">
+  <div class="map-ph">📍 {{ el.content.address }}</div>
+</div>
+
+<!-- COUNTDOWN -->
+<div *ngIf="el.type === 'countdown'" class="el-countdown" [style.background]="el.content.bgColor">
+  <div class="cd-title" [style.color]="el.content.textColor">{{ el.content.title }}</div>
+  <div class="cd-boxes">
+    <div class="cd-box" [style.border-color]="el.content.accentColor">
+      <span [style.color]="el.content.accentColor">00</span>
+      <small [style.color]="el.content.textColor">ימים</small>
+    </div>
+    <div class="cd-box" [style.border-color]="el.content.accentColor">
+      <span [style.color]="el.content.accentColor">00</span>
+      <small [style.color]="el.content.textColor">שעות</small>
+    </div>
+    <div class="cd-box" [style.border-color]="el.content.accentColor">
+      <span [style.color]="el.content.accentColor">00</span>
+      <small [style.color]="el.content.textColor">דקות</small>
+    </div>
+  </div>
+</div>
+
+<!-- DIVIDER -->
+<div *ngIf="el.type === 'divider'" class="el-divider"
+  [style.border-top]="el.content.thickness + 'px ' + el.content.style + ' ' + el.content.color">
+</div>
+
+<!-- SPACER -->
+<div *ngIf="el.type === 'spacer'" class="el-spacer"></div>
+
+<!-- PDF DOWNLOAD -->
+<div *ngIf="el.type === 'pdf-download'" class="el-pdf-download">
+  <a *ngIf="el.content.url" [href]="el.content.url" [download]="el.content.fileName">
+    <button [style.background]="el.content.btnColor" [style.color]="el.content.textColor" class="pdf-download-btn">
+      ⬇️ {{ el.content.btnText }}
+    </button>
+  </a>
+</div>
+
+<!-- SHAPE -->
+<svg *ngIf="el.type === 'shape'" [attr.width]="el.width" [attr.height]="el.height" style="display:block">
+  <ellipse *ngIf="el.shapeType === 'circle' || el.shapeType === 'ellipse'"
+    [attr.cx]="el.width/2" [attr.cy]="el.height/2"
+    [attr.rx]="el.width/2" [attr.ry]="el.height/2"
+    [attr.fill]="el.content.fillColor" />
+  <rect *ngIf="el.shapeType === 'rect' || el.shapeType === 'rect-rounded'"
+    x="0" y="0" [attr.width]="el.width" [attr.height]="el.height"
+    [attr.rx]="el.shapeType === 'rect-rounded' ? (el.content.borderRadius || 12) : 0"
+    [attr.fill]="el.content.fillColor" />
+  <path *ngIf="!['circle','ellipse','rect','rect-rounded'].includes(el.shapeType || '')"
+    [attr.d]="getShapePath(el)" [attr.fill]="el.content.fillColor" />
+</svg>

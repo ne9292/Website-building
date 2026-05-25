@@ -1,0 +1,288 @@
+/* ============================================================
+   canvas-element.css — כל האלמנטים אפור כהה
+   ============================================================ */
+
+/* ===== Host — ממלא את כל el-body ===== */
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* אין overflow — כל אלמנט מגדיר בעצמו */
+}
+
+/* ===== RTL ===== */
+.el-hero, .el-text, .el-button, .el-image, .el-product,
+.el-cart, .el-about, .el-gallery, .el-video, .el-contact,
+.el-navbar, .el-testimonial, .el-booking, .el-social,
+.el-pricing, .el-map, .el-countdown, .el-divider, .el-spacer,
+.el-pdf, .el-pdf-download {
+  direction: rtl;
+}
+
+/* ===== שדות עריכה Inline ===== */
+.ie-input {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid rgba(255,255,255,0.4);
+  outline: none;
+  text-align: center;
+  width: 90%;
+  font-size: inherit;
+  padding: 4px 0;
+  cursor: text;
+  color: inherit;
+}
+.ie-title { font-size: 1.8rem; font-weight: bold; }
+.ie-sub   { font-size: 1rem; }
+
+.ie-textarea {
+  width: 100%; height: 100%;
+  border: none; outline: none;
+  resize: none;
+  background: transparent;
+  color: #e2e8f0;
+  padding: 10px 14px;
+  font-family: inherit; cursor: text;
+}
+
+.ie-textarea-sm {
+  width: 100%; height: 60px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.05);
+  color: #e2e8f0;
+  outline: none; resize: none;
+  padding: 6px 8px;
+  font-size: 0.85rem; border-radius: 5px;
+}
+
+.ie-btn {
+  width: 100%; height: 100%;
+  border: none; outline: none;
+  cursor: text; text-align: center;
+  font-size: inherit; font-weight: 600;
+  background: transparent; color: inherit;
+}
+
+.ie-dark {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid rgba(255,255,255,0.25);
+  outline: none; width: 90%;
+  color: #e2e8f0;
+  font-size: 0.88rem; font-weight: 600;
+  cursor: text; padding: 2px 0;
+}
+
+/* ===== HERO ===== */
+.el-hero {
+  width: 100%; height: 100%;
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.hero-overlay { position: absolute; inset: 0; }
+.hero-inner {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 8px;
+  text-align: center; padding: 1.2rem;
+}
+.el-hero h2 { font-size: 1.8rem; }
+.hero-cta { border: none; color: white; padding: 10px 24px; border-radius: 8px; font-size: 1rem; cursor: default; }
+
+/* ===== TEXT — Quill ===== */
+.el-text { width: 100%; height: 100%; padding: 10px 14px; overflow: hidden; }
+.ql-toolbar   { display: none !important; }
+.ql-container { border: none !important; height: 100% !important; font-size: inherit !important; }
+.ql-editor    { padding: 8px 12px !important; height: 100% !important; min-height: 60px !important; direction: rtl; text-align: right; color: inherit; }
+
+/* ===== BUTTON ===== */
+.el-button { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.btn-filled, .btn-outline, .btn-ghost, .btn-pill { width: 100%; height: 100%; cursor: default; font-weight: 500; }
+.btn-filled  { border: none; }
+.btn-outline { background: transparent; }
+.btn-ghost   { border: none; }
+.btn-pill    { border: none; border-radius: 999px !important; padding: 0 20px; }
+
+/* ===== IMAGE ===== */
+.el-image {
+  width: 100%; height: 100%;
+  background: #2d2d2d;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; position: relative; cursor: pointer;
+}
+.el-image img { width: 100%; height: 100%; }
+.img-ph {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  color: rgba(255,255,255,0.25); font-size: 2rem;
+  cursor: pointer; padding: 1rem; width: 100%; height: 100%; justify-content: center;
+}
+.img-ph-text { font-size: 0.78rem; }
+.img-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 8px 12px; font-size: 0.9rem; text-align: center; color: white; }
+
+/* ===== PRODUCT ===== */
+.el-product { width: 100%; height: 100%; display: flex; flex-direction: column; overflow: hidden; }
+.prod-img { flex: 1; background: #2d2d2d; display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: pointer; }
+.prod-img img { width: 100%; height: 100%; object-fit: cover; }
+.prod-img-ph  { font-size: 2rem; text-align: center; color: rgba(255,255,255,0.25); }
+.prod-body  { padding: 8px 10px; }
+.prod-name  { font-weight: 600; font-size: 0.86rem; margin-bottom: 2px; }
+.prod-desc  { font-size: 0.7rem; color: rgba(255,255,255,0.5); margin-bottom: 4px; }
+.prod-price { font-weight: 700; font-size: 0.94rem; margin-bottom: 6px; }
+.prod-btn   { width: 100%; border: none; color: white; padding: 6px; border-radius: 7px; font-size: 0.76rem; cursor: pointer; }
+
+/* ===== CART ===== */
+.el-cart { width: 100%; height: 100%; padding: 12px; display: flex; flex-direction: column; gap: 5px; overflow: hidden; }
+.cart-title    { font-weight: 700; font-size: 0.9rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 6px; }
+.cart-empty    { color: rgba(255,255,255,0.3); font-size: 0.8rem; text-align: center; flex: 1; display: flex; align-items: center; justify-content: center; }
+.cart-row      { display: flex; align-items: center; gap: 6px; font-size: 0.78rem; }
+.cart-name     { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cart-qty      { color: rgba(255,255,255,0.4); }
+.cart-price    { font-weight: 600; }
+.cart-del      { background: transparent; border: none; color: #ef4444; cursor: pointer; font-size: 0.7rem; }
+.cart-total    { font-weight: 700; font-size: 0.95rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 6px; }
+.cart-checkout { width: 100%; border: none; color: white; padding: 8px; border-radius: 7px; font-size: 0.82rem; cursor: pointer; font-weight: 600; }
+
+/* ===== ABOUT ===== */
+.el-about { width: 100%; height: 100%; display: flex; align-items: center; gap: 28px; padding: 24px 36px; box-sizing: border-box; overflow: hidden; }
+.about-logo { width: 80px; height: 80px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: pointer; flex-shrink: 0; }
+.about-logo img    { width: 100%; height: 100%; object-fit: cover; }
+.about-logo-ph     { font-size: 2rem; }
+.about-divider     { width: 1px; height: 60%; background: rgba(255,255,255,0.15); flex-shrink: 0; }
+.about-body        { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+.about-name        { font-weight: 700; font-size: 1rem; }
+.about-desc        { font-size: 0.8rem; opacity: 0.6; }
+.about-details     { display: flex; flex-direction: column; gap: 2px; margin-top: 4px; }
+.about-detail-item { font-size: 0.75rem; opacity: 0.7; display: flex; align-items: center; gap: 4px; }
+
+/* ===== GALLERY ===== */
+.el-gallery { width: 100%; height: 100%; display: flex; flex-wrap: wrap; background: #2d2d2d; overflow: hidden; align-content: flex-start; }
+.el-gallery.layout-row  { flex-wrap: nowrap; }
+.el-gallery.layout-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); }
+.gallery-img { position: relative; overflow: hidden; min-width: 60px; min-height: 60px; flex: 1; }
+.gallery-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.gallery-del { position: absolute; top: 3px; right: 3px; background: rgba(0,0,0,0.65); color: white; border: none; width: 18px; height: 18px; border-radius: 50%; font-size: 0.58rem; cursor: pointer; display: none; align-items: center; justify-content: center; }
+.gallery-img:hover .gallery-del { display: flex; }
+.gallery-ph { width: 100%; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.25); font-size: 0.8rem; cursor: pointer; padding: 1rem; }
+
+/* ===== VIDEO ===== */
+.el-video { width: 100%; height: 100%; background: #111; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.video-ph { color: rgba(255,255,255,0.4); text-align: center; font-size: 0.82rem; cursor: pointer; }
+
+/* ===== CONTACT ===== */
+.el-contact { width: 100%; height: 100%; padding: 1rem; display: flex; flex-direction: column; gap: 5px; overflow: hidden; }
+.el-contact h3 { font-size: 0.9rem; font-weight: 600; flex-shrink: 0; }
+.el-contact input, .el-contact textarea {
+  padding: 5px 8px;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 5px;
+  font-size: 0.78rem;
+  background: rgba(255,255,255,0.06);
+  color: #e2e8f0;
+  resize: none;
+  flex-shrink: 0;
+}
+.el-contact textarea { height: 60px; flex-shrink: 0; }
+.el-contact button { padding: 7px; color: white; border: none; border-radius: 6px; font-size: 0.8rem; font-weight: 500; flex-shrink: 0; }
+
+/* ===== NAVBAR ===== */
+.el-navbar { width: 100%; min-height: 100%; display: flex; align-items: center; padding: 0 1rem; gap: 1.2rem; position: relative; overflow: hidden; }
+.nb-brand        { font-weight: 700; font-size: 0.95rem; white-space: nowrap; }
+.nb-links        { display: flex; gap: 1rem; flex: 1; }
+.nb-link         { font-size: 0.82rem; cursor: default; opacity: 0.85; white-space: nowrap; }
+.nb-sticky-badge { position: absolute; top: 4px; left: 4px; font-size: 0.7rem; opacity: 0.7; }
+
+/* ===== TESTIMONIAL ===== */
+.el-testimonial { width: 100%; height: 100%; padding: 16px; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; }
+.t-quote  { font-size: 4rem; line-height: 1; opacity: 0.15; font-family: Georgia, serif; position: absolute; top: 4px; right: 12px; }
+.t-author { font-size: 0.76rem; margin-top: 8px; opacity: 0.6; }
+
+/* ===== BOOKING ===== */
+.el-booking { width: 100%; height: 100%; padding: 20px; display: flex; flex-direction: column; gap: 10px; border-radius: 8px; box-sizing: border-box; overflow: hidden; }
+.el-booking h3     { font-size: 1.1rem; font-weight: 700; margin: 0; flex-shrink: 0; }
+.booking-subtitle  { font-size: 0.82rem; color: rgba(255,255,255,0.4); margin: 0; flex-shrink: 0; }
+.booking-form      { display: flex; flex-direction: column; gap: 8px; }
+.booking-input     { padding: 8px 12px; border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; font-size: 0.85rem; background: rgba(255,255,255,0.06); color: #e2e8f0; width: 100%; box-sizing: border-box; flex-shrink: 0; }
+.booking-textarea  { height: 70px; resize: none; }
+.booking-btn       { width: 100%; padding: 10px; border: none; border-radius: 6px; color: white; font-size: 0.9rem; font-weight: 600; cursor: default; flex-shrink: 0; }
+
+/* ===== DIVIDER & SPACER ===== */
+.el-divider { width: 100%; height: 100%; display: flex; align-items: center; }
+.el-spacer  { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; border: 1px dashed rgba(255,255,255,0.08); color: rgba(255,255,255,0.2); font-size: 0.7rem; }
+
+/* ===== SOCIAL ===== */
+.el-social   { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; gap: 12px; overflow: hidden; }
+.social-icon { cursor: default; line-height: 1; }
+
+/* ===== PRICING ===== */
+.el-pricing { width: 100%; height: 100%; padding: 16px; display: flex; flex-direction: column; gap: 10px; overflow: hidden; }
+.pricing-hl  { box-shadow: 0 8px 24px rgba(249,115,22,0.2); }
+.pr-title    { font-weight: 700; font-size: 0.9rem; flex-shrink: 0; }
+.pr-price    { font-size: 1.6rem; font-weight: 800; line-height: 1; flex-shrink: 0; }
+.pr-period   { font-size: 0.75rem; font-weight: 400; opacity: 0.6; }
+.pr-features { list-style: none; display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; }
+.pr-features li { font-size: 0.76rem; }
+.pr-btn      { border: none; padding: 8px; border-radius: 7px; font-size: 0.82rem; cursor: default; font-weight: 600; flex-shrink: 0; }
+
+/* ===== MAP ===== */
+.el-map  { width: 100%; height: 100%; background: #2d2d2d; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.map-ph  { color: rgba(255,255,255,0.4); font-size: 0.85rem; }
+
+/* ===== COUNTDOWN ===== */
+.el-countdown { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 12px; overflow: hidden; }
+.cd-title     { font-weight: 600; font-size: 0.9rem; }
+.cd-boxes     { display: flex; gap: 10px; }
+.cd-box       { display: flex; flex-direction: column; align-items: center; border: 2px solid; border-radius: 8px; padding: 8px 12px; }
+.cd-box span  { font-size: 1.4rem; font-weight: 800; }
+.cd-box small { font-size: 0.65rem; }
+
+/* ===== PDF ===== */
+.el-pdf { width: 100%; height: 100%; overflow: hidden; }
+.pdf-ph { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(220,38,38,0.1); border: 2px dashed #dc2626; border-radius: 8px; cursor: pointer; gap: 8px; color: #dc2626; font-size: 0.9rem; }
+.pdf-ph span:first-child { font-size: 2rem; }
+.el-pdf-download { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.pdf-download-btn { padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-size: 1rem; font-weight: 600; width: 100%; height: 100%; }
+.pdf-ph-btn { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.3); border: 2px dashed rgba(255,255,255,0.15) !important; }
+.pdf-pages  { display: flex; flex-direction: column; gap: 0; overflow-y: auto; height: 100%; }
+.pdf-page   { width: 100%; display: block; }
+
+
+/* ב-canvas-element.css */
+
+.el-text { 
+  width: 100%; 
+  height: 100%; 
+  padding: 10px 14px; 
+  overflow: visible !important; /* וודא שזה visible */
+}
+
+/* הוספת מרווח ביטחון לכל האלמנטים שמשתמשים ב-RTL */
+/* .el-hero, .el-text, .el-button, .el-product, .el-navbar {
+  box-sizing: border-box;
+  padding-left: 4px !important;
+  padding-right: 4px !important;
+} */
+
+/* שנה את הבלוק הזה ב-canvas-element.css */
+.el-hero, .el-text, .el-button, .el-image, .el-product,
+.el-cart, .el-about, .el-gallery, .el-video, .el-contact,
+.el-navbar, .el-testimonial, .el-booking, .el-social,
+.el-pricing, .el-map, .el-countdown, .el-divider, .el-spacer,
+.el-pdf, .el-pdf-download {
+  direction: rtl;
+  overflow: visible !important; /* משנה מ-hidden ל-visible */
+  box-sizing: border-box;
+}
+.nb-logo {
+  height: 36px;      /* גובה קבוע — מתאים לגובה הnavbar */
+  width: auto;       /* רוחב אוטומטי לפי יחס התמונה */
+  object-fit: contain;
+  max-width: 120px;  /* מניעת הגדלה יתר */
+}
+
+.nb-brand-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}

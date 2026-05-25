@@ -1,0 +1,77 @@
+<!-- create-site.html — מיקום: src/app/components/create-site/create-site.html -->
+
+<div class="cs-wrap">
+  <div class="cs-card">
+
+    <!-- כותרת -->
+    <div class="cs-header">
+      <div class="cs-icon">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="#f97316" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="4" width="24" height="20" rx="2.5"/>
+          <line x1="2" y1="10" x2="26" y2="10"/>
+          <circle cx="6.5" cy="7" r="1.2" fill="#f97316" stroke="none"/>
+          <circle cx="10.5" cy="7" r="1.2" fill="#f97316" stroke="none"/>
+          <line x1="14" y1="17" x2="14" y2="21"/><line x1="12" y1="19" x2="16" y2="19"/>
+        </svg>
+      </div>
+      <h2 class="cs-title">אתר חדש</h2>
+      <p class="cs-sub">מלאי כמה פרטים ונתחיל לבנות</p>
+    </div>
+
+    <!-- שם האתר -->
+    <div class="cs-field">
+      <label class="cs-label">שם האתר</label>
+      <div class="cs-input-wrap">
+        <svg class="cs-input-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+          <path d="M2 12h12M2 8h8M2 4h6"/>
+        </svg>
+        <input class="cs-input" type="text"
+          [(ngModel)]="siteName"
+          placeholder="למשל: החנות של יוסי" />
+      </div>
+    </div>
+
+    <!-- כתובת subdomain -->
+    <div class="cs-field">
+      <label class="cs-label">כתובת האתר</label>
+      <div class="cs-input-wrap cs-subdomain">
+        <svg class="cs-input-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+          <circle cx="8" cy="8" r="6.5"/>
+          <path d="M8 1.5C6 4 5 6 5 8s1 4 3 6.5M8 1.5C10 4 11 6 11 8s-1 4-3 6.5M1.5 8h13"/>
+        </svg>
+        <input class="cs-input" type="text"
+          [(ngModel)]="subdomain"
+          placeholder="yossi-shop" />
+        <span class="cs-suffix">.mysite.com</span>
+      </div>
+    </div>
+
+    <!-- שגיאה -->
+    <div *ngIf="message" class="cs-error">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+        <circle cx="7" cy="7" r="6"/><line x1="7" y1="4.5" x2="7" y2="7.5"/><circle cx="7" cy="9.5" r="0.6" fill="currentColor" stroke="none"/>
+      </svg>
+      {{ message }}
+    </div>
+
+    <!-- כפתורים -->
+    <div class="cs-footer">
+      <button class="cs-btn-back" (click)="goBack()">ביטול</button>
+      <button class="cs-btn-create" (click)="onCreate()" [disabled]="isLoading">
+        <span *ngIf="!isLoading">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 7l4 4 6-6"/>
+          </svg>
+          צור אתר
+        </span>
+        <span *ngIf="isLoading" class="cs-loading">
+          <svg class="cs-spin" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="7" cy="7" r="5.5" stroke-dasharray="20" stroke-dashoffset="10"/>
+          </svg>
+          יוצר...
+        </span>
+      </button>
+    </div>
+
+  </div>
+</div>

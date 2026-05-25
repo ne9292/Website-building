@@ -1,0 +1,26 @@
+## .NET gitignore
+
+# Build outputs
+bin/
+obj/
+
+# Visual Studio files
+.vs/
+*.user
+*.suo
+
+# Sensitive configuration - NEVER commit these
+appsettings.Development.json
+appsettings.Production.json
+appsettings.*.json
+!appsettings.json
+
+# User secrets
+secrets.json
+
+# NuGet packages
+*.nupkg
+packages/
+
+# Logs
+*.log

@@ -1,0 +1,77 @@
+<!-- ============================================================ -->
+<!-- register.html                                               -->
+<!-- מיקום: src/app/components/auth/register/register.html      -->
+<!-- ============================================================ -->
+
+<div class="register-page">
+  <div class="register-container">
+
+    <!-- Brand mark -->
+    <div class="register-brand">
+      <span class="brand-dot"></span>
+      <span class="brand-name">SiteCraft</span>
+    </div>
+
+    <!-- Title -->
+    <h2>צור חשבון <span class="accent">חדש</span></h2>
+    <p class="register-subtitle">הצטרף לאלפי בעלי עסקים שבנו נוכחות דיגיטלית מנצחת</p>
+
+    <!-- Perks strip -->
+    <div class="register-perks">
+      <span class="perk"><span class="perk-dot"></span>14 ימי ניסיון חינם</span>
+      <span class="perk"><span class="perk-dot"></span>ללא כרטיס אשראי</span>
+      <span class="perk"><span class="perk-dot"></span>ביטול בכל עת</span>
+    </div>
+
+    <!-- Form -->
+    <form (ngSubmit)="onRegister()">
+
+      <div class="form-group">
+        <label>שם מלא</label>
+        <input
+          type="text"
+          [(ngModel)]="registerData.fullName"
+          name="fullName"
+          required
+          placeholder="ישראל ישראלי"
+          class="form-control">
+      </div>
+
+      <div class="form-group">
+        <label>אימייל</label>
+        <input
+          type="email"
+          [(ngModel)]="registerData.email"
+          name="email"
+          required
+          placeholder="you@example.com"
+          class="form-control">
+      </div>
+
+      <div class="form-group">
+        <label>סיסמה</label>
+        <input
+          type="password"
+          [(ngModel)]="registerData.password"
+          name="password"
+          required
+          placeholder="לפחות 6 תווים"
+          class="form-control">
+      </div>
+
+      <button type="submit" class="btn-register">צור חשבון</button>
+
+    </form>
+
+    <!-- Feedback message (success / error) -->
+    <p *ngIf="message"
+       [class.success]="isSuccess"
+       [class.error]="!isSuccess">
+      {{ message }}
+    </p>
+
+    <!-- Login link -->
+    <p>כבר רשום? <a routerLink="/login">התחבר כאן</a></p>
+
+  </div>
+</div>

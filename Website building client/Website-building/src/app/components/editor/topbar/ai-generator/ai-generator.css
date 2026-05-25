@@ -1,0 +1,226 @@
+/* ai-generator.css */
+
+.ai-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    direction: rtl;
+  }
+  
+  .ai-modal {
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 16px;
+    width: 520px;
+    max-width: 95vw;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(249,115,22,0.1);
+    overflow: hidden;
+  }
+  
+  /* ===== Header ===== */
+  .ai-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid #2d2d2d;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d1a0a 100%);
+  }
+  
+  .ai-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #f97316;
+  }
+  
+  .ai-icon { font-size: 1.3rem; }
+  
+  .ai-close {
+    background: transparent;
+    border: none;
+    color: #666;
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: all 0.2s;
+  }
+  .ai-close:hover { background: #2d2d2d; color: #fff; }
+  
+  /* ===== Body ===== */
+  .ai-body {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .ai-desc {
+    color: #888;
+    font-size: 0.9rem;
+    margin: 0;
+  }
+  
+  /* ===== Examples ===== */
+  .ai-examples {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+  
+  .ai-ex-label {
+    font-size: 0.8rem;
+    color: #555;
+  }
+  
+  .ai-ex {
+    background: #2d2d2d;
+    border: 1px solid #3d3d3d;
+    color: #ccc;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .ai-ex:hover { background: rgba(249,115,22,0.15); border-color: #f97316; color: #f97316; }
+  
+  /* ===== Input ===== */
+  .ai-input {
+    width: 100%;
+    background: #2d2d2d;
+    border: 1px solid #3d3d3d;
+    border-radius: 10px;
+    color: #e2e8f0;
+    padding: 12px 14px;
+    font-size: 0.9rem;
+    font-family: inherit;
+    resize: none;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+  }
+  .ai-input:focus { outline: none; border-color: #f97316; }
+  .ai-input::placeholder { color: #555; }
+  
+  /* ===== Error ===== */
+  .ai-error {
+    color: #ef4444;
+    font-size: 0.85rem;
+    background: rgba(239,68,68,0.1);
+    padding: 8px 12px;
+    border-radius: 8px;
+  }
+  
+  /* ===== Button ===== */
+  .ai-btn {
+    width: 100%;
+    padding: 12px;
+    background: #f97316;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+  .ai-btn:hover:not(:disabled) { background: #ea580c; transform: translateY(-1px); }
+  .ai-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  
+  .ai-btn-secondary {
+    background: #2d2d2d;
+    color: #ccc;
+    margin-top: -8px;
+  }
+  .ai-btn-secondary:hover { background: #3d3d3d; color: #fff; transform: none; }
+  
+  /* ===== Generating ===== */
+  .ai-generating {
+    align-items: center;
+    padding: 40px 24px;
+  }
+  
+  .ai-spinner {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .ai-spinner-ring {
+    position: absolute;
+    inset: 0;
+    border: 3px solid #2d2d2d;
+    border-top-color: #f97316;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  .ai-spinner-icon {
+    font-size: 1.8rem;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  
+  @keyframes spin    { to { transform: rotate(360deg); } }
+  @keyframes pulse   { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+  
+  .ai-status {
+    color: #ccc;
+    font-size: 0.9rem;
+    text-align: center;
+    margin: 0;
+  }
+  
+  .ai-progress-bar {
+    width: 100%;
+    height: 6px;
+    background: #2d2d2d;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  
+  .ai-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #f97316, #ea580c);
+    border-radius: 3px;
+    transition: width 0.5s ease;
+  }
+  
+  .ai-progress-text {
+    color: #555;
+    font-size: 0.8rem;
+    margin: 0;
+  }
+  
+  /* ===== Done ===== */
+  .ai-done {
+    align-items: center;
+    text-align: center;
+    padding: 40px 24px;
+  }
+  
+  .ai-done-icon { font-size: 3rem; }
+  
+  .ai-done h3 {
+    color: #f97316;
+    font-size: 1.3rem;
+    margin: 0;
+  }
+  
+  .ai-done p {
+    color: #888;
+    font-size: 0.9rem;
+    margin: 0;
+  }

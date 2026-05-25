@@ -1,0 +1,41 @@
+/* site-viewer.css */
+
+.sv-loading {
+  display: flex; align-items: center; justify-content: center; height: 100vh;
+}
+.sv-spinner {
+  width: 40px; height: 40px;
+  border: 3px solid rgba(249,115,22,0.2);
+  border-top-color: #f97316;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.sv-not-found {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  height: 100vh; color: #888;
+}
+.sv-404 { font-size: 6rem; font-weight: 800; color: #f97316; line-height: 1; }
+
+.sv-wrap {
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* הקנבס ממלא 100% רוחב המסך.
+   x ו-width הם אחוזים — מתאימים לכל מסך אוטומטית.
+   y ו-height הם px — הגובה נשמר כמו בעורך. */
+.sv-canvas {
+  position: relative;
+  width: 100%;
+  overflow: visible;
+}
+
+.sv-el {
+  position: absolute;
+  overflow: visible;
+  direction: rtl;
+}

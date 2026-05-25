@@ -1,0 +1,185 @@
+<!-- ============================================================ -->
+<!-- sidebar.html                                                  -->
+<!-- מיקום: src/app/components/editor/sidebar/sidebar.html       -->
+<!-- ============================================================ -->
+
+<div class="rpanel">
+
+  <!-- ===== Tabs ===== -->
+  <div class="tabs">
+    <div class="tab" [class.active]="activeTab === 'elements'" (click)="activeTab = 'elements'" title="רכיבים">
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round">
+        <rect x="1" y="1" width="5" height="5" rx="1"/><rect x="7" y="1" width="5" height="5" rx="1"/>
+        <rect x="1" y="7" width="5" height="5" rx="1"/><rect x="7" y="7" width="5" height="5" rx="1"/>
+      </svg>
+      רכיבים
+    </div>
+    <div class="tab" [class.active]="activeTab === 'design'" (click)="activeTab = 'design'" title="מאפיינים">
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round">
+        <circle cx="4" cy="4" r="2"/><circle cx="9" cy="9" r="2"/>
+        <line x1="6" y1="4" x2="13" y2="4"/><line x1="0" y1="4" x2="2" y2="4"/>
+        <line x1="7" y1="9" x2="13" y2="9"/><line x1="0" y1="9" x2="7" y2="9"/>
+      </svg>
+      מאפיינים
+    </div>
+    <div class="tab" [class.active]="activeTab === 'layers'" (click)="activeTab = 'layers'" title="שכבות">
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round">
+        <path d="M1 9l5.5 3 5.5-3"/><path d="M1 6l5.5 3 5.5-3"/><path d="M1 3l5.5 3 5.5-3L6.5 0 1 3z"/>
+      </svg>
+      שכבות
+    </div>
+    <div class="tab" [class.active]="activeTab === 'pages'" (click)="activeTab = 'pages'" title="דפים">
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round">
+        <path d="M2 1h6l3 3v8a1 1 0 01-1 1H2a1 1 0 01-1-1V2a1 1 0 011-1z"/><path d="M8 1v3h3"/>
+      </svg>
+      דפים
+    </div>
+  </div>
+
+  <!-- ===== Tab: רכיבים ===== -->
+   <!-- תוכן של לשונית הרכיבים — רק מוצג אם הלשונית פעילה -->
+  <div class="tab-content" *ngIf="activeTab === 'elements'">
+    <input class="el-search" placeholder="חיפוש רכיב..." [(ngModel)]="searchQuery"><!-- שדה חיפוש לרכיבים, מקושר למשתנה searchQuery -->
+    <!-- אם אין דף הוא לא יהיה מאופשר -->
+    <button class="btn-shapes" [disabled]="!state.selectedPage()"
+      (click)="showShapePicker = !showShapePicker; $event.stopPropagation()">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2">
+        <polygon points="6,1 11,10 1,10"/>
+      </svg>
+      צורות גיאומטריות
+    </button>
+    <ng-container *ngFor="let group of filteredGroups">
+      <div class="sg-head">{{ group.label }}</div>
+      <div *ngFor="let tool of group.tools"
+        class="el-item" [class.disabled]="!state.selectedPage()"
+        draggable="true" (dragstart)="onDragStart($event, tool)"
+        (click)="addTool(tool)" [title]="tool.desc">
+        <div class="el-icon">
+          <svg *ngIf="tool.id === 'text'"         width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#858585" stroke-width="1.2" stroke-linecap="round"><line x1="2" y1="3" x2="12" y2="3"/><line x1="2" y1="7" x2="9" y2="7"/><line x1="2" y1="11" x2="11" y2="11"/></svg>
+          <svg *ngIf="tool.id === 'image'"        width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#858585" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="1" width="12" height="12" rx="1.5"/><circle cx="4.5" cy="4.5" r="1.2" fill="#858585" stroke="none"/><path d="M1 10l3-4 2.5 3 2-2.5 4 4.5"/></svg>
+          <svg *ngIf="tool.id === 'button'"       width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#858585" stroke-width="1.2" stroke-linecap="round"><rect x="1" y="4" width="12" height="6" rx="2"/></svg>
+          <svg *ngIf="tool.id === 'hero'"         width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#858585" stroke-width="1.2" stroke-linecap="round"><rect x="1" y="1" width="12" height="12" rx="1.5" opacity="0.3"/><rect x="1" y="1" width="12" height="5" rx="1.5"/><line x1="3" y1="8" x2="8" y2="8"/><line x1="3" y1="11" x2="6" y2="11"/></svg>
+          <svg *ngIf="tool.id === 'navbar'"       width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#858585" stroke-width="1.2" stroke-linecap="round"><rect x="1" y="4" width="12" height="6" rx="1"/><circle cx="3.5" cy="7" r="1" fill="#858585" stroke="none"/><line x1="6" y1="7" x2="11" y2="7"/></svg>
+          <svg *ngIf="tool.id === 'divider'"      width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#858585" stroke-width="1.2" stroke-linecap="round"><line x1="1" y1="7" x2="13" y2="7"/></svg>
+          <svg *ngIf="tool.id === 'spacer'"       width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#858585" stroke-width="1.2" stroke-linecap="round"><rect x="1" y="2" width="12" height="10" rx="1" stroke-dasharray="2 1.5"/><line x1="7" y1="4" x2="7" y2="10"/><line x1="4" y1="7" x2="10" y2="7"/></svg>
+          <svg *ngIf="tool.id === 'gallery'"      width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#858585" stroke-width="1.2" stroke-linecap="round"><rect x="1" y="1" width="5.5" height="5.5" rx="1"/><rect x="7.5" y="1" width="5.5" height="5.5" rx="1"/><rect x="1" y="7.5" width="5.5" height="5.5" rx="1"/><rect x="7.5" y="7.5" width="5.5" height="5.5" rx="1"/></svg>
+          <svg *ngIf="tool.id === 'video'"        width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#858585" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="2" width="12" height="10" rx="1.5"/><polygon points="5,4.5 10,7 5,9.5" fill="#858585" stroke="none"/></svg>
+          <svg *ngIf="tool.id === 'pdf'"          width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#858585" stroke-width="1.2" stroke-linecap="round"><path d="M2 1h7l3 3v9a1 1 0 01-1 1H2a1 1 0 01-1-1V2a1 1 0 011-1z"/><path d="M9 1v3h3"/><line x1="3" y1="7" x2="11" y2="7"/><line x1="3" y1="10" x2="8" y2="10"/></svg>
+          <svg *ngIf="tool.id === 'pdf-download'" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#858585" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 1v8"/><path d="M4 6l3 3 3-3"/><rect x="1" y="10" width="12" height="3" rx="1"/></svg>
+          <svg *ngIf="tool.id === 'product'"      width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#858585" stroke-width="1.2" stroke-linecap="round"><rect x="2" y="4" width="10" height="9" rx="1"/><path d="M5 4V3a2 2 0 014 0v1"/></svg>
+          <svg *ngIf="tool.id === 'cart'"         width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#858585" stroke-width="1.2" stroke-linecap="round"><path d="M2 2h2l2 7h5l1.5-5H5"/><circle cx="8" cy="12" r="1"/><circle cx="11" cy="12" r="1"/></svg>
+          <svg *ngIf="tool.id === 'pricing'"      width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#858585" stroke-width="1.2" stroke-linecap="round"><rect x="1" y="1" width="12" height="12" rx="1.5"/><line x1="4" y1="5" x2="10" y2="5"/><line x1="4" y1="8" x2="10" y2="8"/><line x1="4" y1="11" x2="7" y2="11"/></svg>
+          <svg *ngIf="tool.id === 'contact'"      width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#858585" stroke-width="1.2" stroke-linecap="round"><rect x="1" y="3" width="12" height="8" rx="1.5"/><path d="M1 5l6 4 6-4"/></svg>
+          <svg *ngIf="tool.id === 'testimonial'"  width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#858585" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 2h10a1 1 0 011 1v6a1 1 0 01-1 1H5l-3 3V3a1 1 0 011-1z"/></svg>
+          <svg *ngIf="tool.id === 'social'"       width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#858585" stroke-width="1.2"><circle cx="3" cy="7" r="1.8"/><circle cx="7" cy="7" r="1.8"/><circle cx="11" cy="7" r="1.8"/></svg>
+          <svg *ngIf="tool.id === 'about'"        width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#858585" stroke-width="1.2" stroke-linecap="round"><rect x="1" y="3" width="12" height="8" rx="1"/><circle cx="4.5" cy="7" r="1.8"/><line x1="7.5" y1="6" x2="11" y2="6"/><line x1="7.5" y1="8.5" x2="10" y2="8.5"/></svg>
+          <svg *ngIf="tool.id === 'booking'"      width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#858585" stroke-width="1.2" stroke-linecap="round"><rect x="1" y="2" width="12" height="11" rx="1"/><line x1="1" y1="5" x2="13" y2="5"/><line x1="4" y1="1" x2="4" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/></svg>
+          <svg *ngIf="tool.id === 'map'"          width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#858585" stroke-width="1.2" stroke-linecap="round"><path d="M7 1a4 4 0 014 4c0 3-4 8-4 8S3 8 3 5a4 4 0 014-4z"/><circle cx="7" cy="5" r="1.5"/></svg>
+          <svg *ngIf="tool.id === 'countdown'"    width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#858585" stroke-width="1.2" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><path d="M7 4v3l2 2"/></svg>
+        </div>
+        <div>
+          <div class="el-name">{{ tool.label }}</div>
+          <div class="el-desc">{{ tool.desc }}</div>
+        </div>
+        <span class="drag-hint">⠿</span>
+      </div>
+    </ng-container>
+  </div>
+
+  <!-- ===== Tab: מאפיינים ===== -->
+  <div class="tab-content design-panel" *ngIf="activeTab === 'design'">
+    <div *ngIf="!state.selectedEl()" class="no-selection">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="#555" stroke-width="1.5" stroke-linecap="round">
+        <path d="M4 4l24 12-12 4-4 12z"/>
+      </svg>
+      <p>בחרי אלמנט בקנבס</p>
+    </div>
+    <!-- אם יש אלמנט נבחר, מציגים את סרגל העיצוב -->
+    <app-format-bar *ngIf="state.selectedEl()" />
+  </div>
+
+  <!-- ===== Tab: שכבות ===== -->
+  <div class="tab-content" *ngIf="activeTab === 'layers'">
+    <div class="sg-head" style="margin-top:6px">שכבות — {{ state.elements().length }} אלמנטים</div>
+    <div *ngIf="state.elements().length === 0" class="no-selection"><p>אין אלמנטים בדף</p></div>
+    <!-- ממין את השכבות ומשכפל -->
+    <div *ngFor="let el of state.sortedElements().slice().reverse(); let i = index"
+      class="layer-item"
+      [class.sel]="state.selectedEl()?.id === el.id"
+      [class.drag-over]="dragOverIndex === i"
+      draggable="true"
+      (click)="state.selectElement(el)"
+      (dragstart)="onLayerDragStart(i)"
+      (dragover)="$event.preventDefault()"
+      (dragenter)="onLayerDragEnter(i)"
+      (dragleave)="onLayerDragLeave()"
+      (drop)="onLayerDrop(i)">
+      <div class="layer-drag-handle">⠿</div>
+      <div class="layer-icon">
+        <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="#666" stroke-width="1.2" stroke-linecap="round">
+          <rect *ngIf="el.type === 'text'"   x="1" y="2" width="9" height="1.5" rx="0.5"/>
+          <rect *ngIf="el.type === 'image'"  x="1" y="1" width="9" height="9"   rx="1"/>
+          <rect *ngIf="el.type === 'button'" x="1" y="3" width="9" height="5"   rx="1.5"/>
+          <rect *ngIf="el.type !== 'text' && el.type !== 'image' && el.type !== 'button'" x="1" y="1" width="9" height="9" rx="1"/>
+        </svg>
+      </div>
+      <span class="layer-name">{{ el.label }}</span>
+      <span class="layer-z">{{ el.zIndex }}</span>
+    </div>
+  </div>
+
+  <!-- ===== Tab: דפים ===== -->
+  <div class="tab-content" *ngIf="activeTab === 'pages'">
+    <div *ngFor="let page of state.pages()"
+      class="page-item"
+      [class.active]="state.selectedPage()?.id === page.id"
+      (click)="state.selectPage(page)">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+        <path d="M2 1h5l3 3v7a1 1 0 01-1 1H2a1 1 0 01-1-1V2a1 1 0 011-1z"/><path d="M7 1v3h3"/>
+      </svg>
+      <span class="page-name">{{ page.title }}</span>
+      <button class="btn-del-page" (click)="state.deletePage(page.id); $event.stopPropagation()" title="מחק דף">✕</button>
+    </div>
+    <div *ngIf="state.pages().length === 0" class="no-selection"><p>אין דפים עדיין</p></div>
+    <button class="btn-add-page" (click)="openPagePicker()" [disabled]="state.pages().length >= 6">
+      <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><path d="M5 1v8M1 5h8"/></svg>
+      הוסף דף
+    </button>
+  </div>
+
+</div>
+
+<!-- ===== בורר צורות ===== -->
+<div class="overlay" *ngIf="showShapePicker" (click)="showShapePicker = false">
+  <div class="shape-picker" (click)="$event.stopPropagation()">
+    <div class="picker-header">
+      <h3>צורות גיאומטריות</h3>
+      <button (click)="showShapePicker = false">✕</button>
+    </div>
+    <div class="shape-grid">
+      <div *ngFor="let s of shapes" class="shape-card" (click)="addShape(s)">
+        <div class="shape-icon" [style.color]="s.color">{{ s.icon }}</div>
+        <span>{{ s.label }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== בורר סוג דף ===== -->
+<div class="overlay" *ngIf="state.showPagePicker()" (click)="state.showPagePicker.set(false)">
+  <div class="page-picker" (click)="$event.stopPropagation()">
+    <div class="picker-header">
+      <h3>איזה דף להוסיף?</h3>
+      <button (click)="state.showPagePicker.set(false)">✕</button>
+    </div>
+    <div class="page-grid">
+      <div *ngFor="let type of pageTypes" class="page-card" (click)="addPage(type)">
+        <div class="page-card-color" [style.background]="type.color"></div>
+        <div>
+          <strong>{{ type.label }}</strong>
+          <span>{{ type.desc }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

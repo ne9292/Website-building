@@ -1,0 +1,291 @@
+/* ============================================================
+   sidebar.css
+   מיקום: src/app/components/editor/sidebar/sidebar.css
+   ✅ עיצוב: שחור/אפור/כתום במקום כחול
+   ============================================================ */
+
+   :host { display: contents; }
+
+   .rpanel {
+     width: 240px;
+     background: #252526;
+     border-right: 1px solid #3c3c3c;
+     display: flex;
+     flex-direction: column;
+     height: 100%;
+     flex-shrink: 0;
+     overflow: hidden;
+   }
+   
+   /* ===== Tabs ===== */
+   .tabs {
+     display: flex;
+     border-bottom: 1px solid #3c3c3c;
+     flex-shrink: 0;
+     background: #2c2c2c;
+   }
+   
+   .tab {
+     flex: 1;
+     height: 38px;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     gap: 4px;
+     font-size: 10px;
+     color: #666;
+     cursor: pointer;
+     border-bottom: 2px solid transparent;
+     transition: all 0.1s;
+     white-space: nowrap;
+   }
+   .tab:hover { color: #999; }
+   /* ✅ כתום במקום כחול */
+   .tab.active { color: #f97316; border-bottom-color: #f97316; }
+   
+   /* ===== Tab Content ===== */
+   .tab-content {
+     flex: 1;
+     overflow-y: auto;
+     overflow-x: hidden;
+     scrollbar-width: thin;
+     scrollbar-color: #444 transparent;
+   }
+   
+   /* חיפוש */
+   .el-search {
+     background: #3c3c3c;
+     border: none;
+     color: #ccc;
+     font-size: 11px;
+     padding: 5px 8px;
+     border-radius: 3px;
+     width: calc(100% - 16px);
+     margin: 8px;
+     display: block;
+     outline: none;
+   }
+   /* ✅ כתום במקום כחול */
+   .el-search:focus { border: 1px solid #f97316; }
+   
+   /* כפתור צורות */
+   .btn-shapes {
+     width: calc(100% - 16px);
+     margin: 0 8px 6px;
+     padding: 5px 8px;
+     background: transparent;
+     border: 1px solid #3c3c3c;
+     color: #858585;
+     border-radius: 3px;
+     cursor: pointer;
+     font-size: 10px;
+     transition: all 0.1s;
+     display: flex;
+     align-items: center;
+     gap: 6px;
+   }
+   /* ✅ כתום במקום כחול */
+   .btn-shapes:hover    { background: #2a2d2e; color: #f97316; border-color: #f97316; }
+   .btn-shapes:disabled { opacity: 0.3; cursor: not-allowed; }
+   
+   /* כותרת קבוצה */
+   .sg-head {
+     font-size: 9px;
+     color: #5a5a5a;
+     text-transform: uppercase;
+     letter-spacing: 0.8px;
+     padding: 6px 10px 3px;
+   }
+   
+   /* פריט כלי */
+   .el-item {
+     display: flex;
+     align-items: center;
+     gap: 8px;
+     padding: 4px 10px;
+     cursor: grab;
+     transition: background 0.1s;
+   }
+   .el-item:hover  { background: #2a2d2e; }
+   .el-item:active { cursor: grabbing; }
+   .el-item.disabled { opacity: 0.3; cursor: not-allowed; pointer-events: none; }
+   
+   .el-icon {
+     width: 24px;
+     height: 24px;
+     border-radius: 3px;
+     background: #2d2d2d;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     flex-shrink: 0;
+   }
+   
+   .el-name { font-size: 11px; color: #cccccc; line-height: 1.3; }
+   .el-desc { font-size: 9px; color: #6b6b6b; }
+   
+   .drag-hint {
+     margin-right: auto;
+     color: #3c3c3c;
+     font-size: 11px;
+     opacity: 0;
+     transition: opacity 0.1s;
+   }
+   .el-item:hover .drag-hint { opacity: 1; }
+   
+   /* ===== מאפיינים ===== */
+   .design-panel { display: flex; flex-direction: column; }
+   
+   .no-selection {
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     justify-content: center;
+     gap: 10px;
+     padding: 40px 20px;
+     color: #555;
+     font-size: 11px;
+     text-align: center;
+   }
+   
+   /* ===== שכבות ===== */
+   .layer-item {
+     display: flex;
+     align-items: center;
+     gap: 7px;
+     padding: 5px 10px;
+     cursor: pointer;
+     transition: background 0.1s;
+   }
+   .layer-item:hover { background: #2a2d2e; }
+   /* ✅ כתום במקום כחול */
+   .layer-item.sel      { background: rgba(249,115,22,0.15); }
+   .layer-item.drag-over { background: rgba(249,115,22,0.15); border-top: 2px solid #f97316; }
+   
+   .layer-drag-handle { color: #444; cursor: grab; font-size: 12px; flex-shrink: 0; }
+   .layer-item:hover .layer-drag-handle { color: #888; }
+   
+   .layer-icon { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+   .layer-name { font-size: 11px; color: #cccccc; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+   .layer-z    { font-size: 9px; color: #555; background: #333; padding: 1px 4px; border-radius: 2px; }
+   
+   /* ===== דפים ===== */
+   .page-item {
+     display: flex;
+     align-items: center;
+     gap: 7px;
+     padding: 6px 10px;
+     cursor: pointer;
+     color: #858585;
+     font-size: 11px;
+     transition: background 0.1s;
+   }
+   .page-item:hover  { background: #2a2d2e; color: #cccccc; }
+   /* ✅ כתום במקום כחול */
+   .page-item.active { background: rgba(249,115,22,0.2); color: #f97316; }
+   
+   .page-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+   
+   .btn-del-page {
+     background: transparent;
+     border: none;
+     color: #4a4a4a;
+     cursor: pointer;
+     font-size: 10px;
+     padding: 1px 3px;
+     border-radius: 2px;
+     opacity: 0;
+     transition: opacity 0.1s;
+   }
+   .page-item:hover .btn-del-page { opacity: 1; }
+   .btn-del-page:hover { color: #ef4444; }
+   
+   .btn-add-page {
+     margin: 8px;
+     padding: 6px 10px;
+     background: transparent;
+     border: 1px solid #3c3c3c;
+     color: #6b6b6b;
+     border-radius: 3px;
+     cursor: pointer;
+     font-size: 10px;
+     display: flex;
+     align-items: center;
+     gap: 6px;
+     transition: all 0.1s;
+     width: calc(100% - 16px);
+   }
+   /* ✅ כתום במקום כחול */
+   .btn-add-page:hover    { background: #2a2d2e; color: #f97316; border-color: #f97316; }
+   .btn-add-page:disabled { opacity: 0.3; cursor: not-allowed; }
+   
+   /* ===== Overlays ===== */
+   .overlay {
+     position: fixed;
+     inset: 0;
+     background: rgba(0,0,0,0.65);
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     z-index: 1000;
+   }
+   
+   .shape-picker, .page-picker {
+     background: #252526;
+     border: 1px solid #3c3c3c;
+     border-radius: 6px;
+     padding: 16px;
+     max-width: 90vw;
+     max-height: 80vh;
+     overflow-y: auto;
+   }
+   .shape-picker { width: 480px; }
+   .page-picker  { width: 380px; }
+   
+   .picker-header {
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+     margin-bottom: 12px;
+   }
+   .picker-header h3 { font-size: 13px; font-weight: 500; color: #cccccc; }
+   .picker-header button { background: transparent; border: none; font-size: 14px; cursor: pointer; color: #6b6b6b; }
+   .picker-header button:hover { color: #cccccc; }
+   
+   .shape-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; }
+   
+   .shape-card {
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     gap: 4px;
+     padding: 8px 4px;
+     border: 1px solid #3c3c3c;
+     border-radius: 3px;
+     cursor: pointer;
+     transition: all 0.1s;
+     background: #1e1e1e;
+   }
+   /* ✅ כתום במקום כחול */
+   .shape-card:hover { border-color: #f97316; background: rgba(249,115,22,0.1); }
+   .shape-icon { font-size: 18px; line-height: 1; }
+   .shape-card span { font-size: 9px; color: #6b6b6b; text-align: center; }
+   
+   .page-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-top: 12px; }
+   
+   .page-card {
+     display: flex;
+     align-items: center;
+     gap: 10px;
+     padding: 10px;
+     border: 1px solid #3c3c3c;
+     border-radius: 3px;
+     cursor: pointer;
+     transition: border-color 0.1s;
+     background: #1e1e1e;
+   }
+   /* ✅ כתום במקום כחול */
+   .page-card:hover { border-color: #f97316; }
+   .page-card-color { width: 24px; height: 24px; border-radius: 3px; flex-shrink: 0; }
+   .page-card strong { display: block; font-size: 11px; font-weight: 500; color: #cccccc; }
+   .page-card span   { font-size: 9px; color: #6b6b6b; }

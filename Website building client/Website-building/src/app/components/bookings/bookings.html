@@ -1,0 +1,95 @@
+<!-- ============================================================ -->
+<!-- bookings.html                                                 -->
+<!-- מיקום: src/app/components/bookings/bookings.html            -->
+<!-- ============================================================ -->
+
+<div class="bookings-page">
+
+  <!-- כותרת -->
+  <div class="bookings-header">
+    <button class="btn-back" (click)="goBack()">← חזרה</button>
+    <h2>הזמנות — {{ siteName }}</h2>
+    <button *ngIf="bookings.length > 0"
+      class="btn-send-all" (click)="openSendAllDialog()">
+      ✉️ שלח לכולם
+    </button>
+    <button class="btn-refresh" (click)="loadBookings()">🔄 רענן</button>
+  </div>
+
+  <!-- טעינה -->
+  <div *ngIf="loading" class="loading">טוען...</div>
+
+  <!-- אין הזמנות -->
+  <div *ngIf="!loading && bookings.length === 0" class="no-bookings">
+    <div class="empty-icon">📅</div>
+    <p>אין הזמנות עדיין</p>
+  </div>
+
+  <!-- טבלת הזמנות -->
+  <div *ngIf="!loading && bookings.length > 0" class="bookings-table-wrap">
+    <table class="bookings-table">
+      <thead>
+        <tr>
+          <th>שם</th><th>טלפון</th><th>מייל</th>
+          <th>תאריך</th><th>שעה</th><th>הערה</th>
+          <th>סטטוס</th><th>פעולות</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let b of bookings">
+          <td>{{ b.name }}</td>
+          <td>{{ b.phone }}</td>
+          <td>{{ b.email || '—' }}</td>
+          <td>{{ b.date  || '—' }}</td>
+          <td>{{ b.time  || '—' }}</td>
+          <td class="note-cell">{{ b.note || '—' }}</td>
+          <td>
+            <span class="status-badge" [class]="getStatusClass(b.status)">
+              {{ getStatusLabel(b.status) }}
+            </span>
+          </td>
+          <td class="actions">
+            <button *ngIf="b.status !== 'confirmed'"
+              class="btn-confirm" (click)="updateStatus(b, 'confirmed')">✓ אשר</button>
+            <button *ngIf="b.status !== 'cancelled'"
+              class="btn-cancel" (click)="updateStatus(b, 'cancelled')">✕ בטל</button>
+            <button class="btn-delete"  (click)="deleteBooking(b.id)">🗑</button>
+            <button class="btn-message" (click)="openMessageDialog(b)">✉️ שלח</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- דיאלוג שליחה ליחיד -->
+<div *ngIf="messageDialog" class="dialog-overlay" (click)="messageDialog = null">
+  <div class="dialog" (click)="$event.stopPropagation()">
+    <h3>שלח הודעה ל-{{ messageDialog.name }}</h3>
+    <input [(ngModel)]="messageSubject" placeholder="נושא" class="dialog-input" />
+    <textarea [(ngModel)]="messageText" placeholder="הודעה..." class="dialog-textarea"></textarea>
+    <label class="fmt-upload">
+      📎 צרף קובץ
+      <input type="file" (change)="onAttachmentChange($event)" hidden />
+    </label>
+    <span *ngIf="attachment">{{ attachment.name }} ✓</span>
+    <div class="dialog-actions">
+      <button class="btn-send"          (click)="sendMessage()">שלח ✉️</button>
+      <button class="btn-cancel-dialog" (click)="messageDialog = null">ביטול</button>
+    </div>
+  </div>
+</div>
+
+<!-- דיאלוג שליחה לכולם -->
+<div *ngIf="sendAllDialog" class="dialog-overlay" (click)="sendAllDialog = false">
+  <div class="dialog" (click)="$event.stopPropagation()">
+    <h3>שלח הודעה לכל {{ bookings.length }} הזמנות</h3>
+    <input [(ngModel)]="messageSubject" placeholder="נושא" class="dialog-input" />
+    <textarea [(ngModel)]="messageText" placeholder="הודעה..." class="dialog-textarea"></textarea>
+    <div class="dialog-actions">
+      <button class="btn-send"          (click)="sendToAll()">שלח לכולם ✉️</button>
+      <button class="btn-cancel-dialog" (click)="sendAllDialog = false">ביטול</button>
+    </div>
+  </div>
+</div>

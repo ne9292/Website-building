@@ -1,0 +1,87 @@
+/* ============================================================
+   multi-select.css
+   מיקום: src/app/components/editor/multi-select/multi-select.css
+   ✅ עיצוב: שחור/אפור/כתום במקום כחול
+   ============================================================ */
+
+/* ===== מלבן הבחירה ===== */
+.selection-box {
+  position: absolute;
+  /* ✅ כתום במקום כחול */
+  border: 2px solid #f97316;
+  background: rgba(249,115,22,0.08);
+  pointer-events: none;
+  z-index: 9000;
+  border-radius: 2px;
+}
+
+/* ===== תפריט פעולות ===== */
+.multi-toolbar {
+  position: fixed;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  /* ✅ שחור/אפור כהה */
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 6px 14px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  z-index: 9999;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+  color: white;
+  font-size: 0.78rem;
+  user-select: none;
+  white-space: nowrap;
+}
+
+/* מספר נבחרים — כתום */
+.multi-count {
+  color: #f97316;
+  font-weight: 600;
+  font-size: 0.78rem;
+  padding: 0 4px;
+}
+
+.multi-label {
+  color: #64748b;
+  font-size: 0.68rem;
+}
+
+.multi-sep {
+  width: 1px;
+  height: 18px;
+  background: rgba(255,255,255,0.1);
+  margin: 0 2px;
+}
+
+/* כפתורים */
+.multi-toolbar button {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #cbd5e1;
+  padding: 3px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  transition: all 0.12s;
+}
+/* ✅ כתום במקום כחול */
+.multi-toolbar button:hover {
+  background: rgba(249,115,22,0.15);
+  border-color: rgba(249,115,22,0.3);
+  color: #f97316;
+}
+
+/* כפתור מחיקה — אדום */
+.multi-del {
+  background: rgba(239,68,68,0.12) !important;
+  border-color: rgba(239,68,68,0.25) !important;
+  color: #fca5a5 !important;
+}
+.multi-del:hover {
+  background: rgba(239,68,68,0.25) !important;
+  color: #ef4444 !important;
+}

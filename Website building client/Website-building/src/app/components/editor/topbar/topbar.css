@@ -1,0 +1,183 @@
+/* ============================================================
+   topbar.css
+   מיקום: src/app/components/editor/topbar/topbar.css
+   ============================================================ */
+
+   .topbar-nav {
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    height: 42px;
+    background: #2d2d2d;
+    border-bottom: 1px solid #3c3c3c;
+    flex-shrink: 0;
+    gap: 8px;
+  }
+  
+  /* שם הדף — ניתן לעריכה */
+  .site-title-input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid transparent;
+    color: #cccccc;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 3px 6px;
+    min-width: 100px;
+    outline: none;
+    transition: border-color 0.1s;
+  }
+  .site-title-input:hover,
+  .site-title-input:focus {
+    border-bottom-color: #0e639c;
+    background: rgba(255,255,255,0.04);
+  }
+  
+  /* שם האתר — תצוגה בלבד */
+  .site-title {
+    font-size: 11px;
+    color: #6b6b6b;
+  }
+  
+  .btn-back {
+    background: transparent;
+    border: 1px solid #3c3c3c;
+    color: #858585;
+    padding: 4px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 11px;
+    transition: all 0.1s;
+  }
+  .btn-back:hover { background: #2a2d2e; color: #cccccc; border-color: #555; }
+  
+  .btn-undo {
+    background: transparent;
+    border: 1px solid #3c3c3c;
+    color: #858585;
+    padding: 4px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 11px;
+    transition: all 0.1s;
+  }
+  .btn-undo:hover { background: #2a2d2e; color: #cccccc; }
+  
+  .nav-actions {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    margin-left: auto; /* דוחף לצד שמאל */
+  }
+  
+  .btn-save {
+    background: #0e639c;
+    border: none;
+    color: white;
+    padding: 5px 14px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 500;
+    min-width: 70px;
+    transition: all 0.1s;
+  }
+  .btn-save:hover      { background: #1177bb; }
+  .btn-save.saving     { background: #555; cursor: not-allowed; }
+  .btn-save.saved      { background: #388a34; }
+  .btn-save.save-error { background: #c72e0f; }
+  
+  /* כפתור פרסום */
+  .btn-publish {
+    background: #16a34a;
+    color: white;
+    border: none;
+    padding: 5px 14px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 500;
+    transition: background 0.1s;
+  }
+  .btn-publish:hover { background: #15803d; }
+
+  /* אתר פעיל */
+  .publish-bar {
+    position: relative;
+  }
+  .site-link {
+    color: #4ade80;
+    font-size: 11px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border: 1px solid #16a34a;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  .site-link:hover { background: rgba(74,222,128,0.08); }
+
+  /* פופאפ קישור */
+  .link-popup {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    background: #1e1e1e;
+    border: 1px solid #3c3c3c;
+    border-radius: 6px;
+    padding: 10px;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    z-index: 1000;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+    min-width: 340px;
+  }
+  .link-input {
+    flex: 1;
+    background: #2d2d2d;
+    border: 1px solid #3c3c3c;
+    color: #cccccc;
+    padding: 4px 8px;
+    border-radius: 3px;
+    font-size: 11px;
+    outline: none;
+    direction: ltr;
+  }
+  .btn-copy {
+    background: #0e639c;
+    color: white;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 11px;
+    white-space: nowrap;
+    min-width: 60px;
+  }
+  .btn-copy:hover { background: #1177bb; }
+  .btn-unpublish {
+    background: transparent;
+    color: #f87171;
+    border: 1px solid #f87171;
+    padding: 4px 8px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 11px;
+    white-space: nowrap;
+  }
+  .btn-unpublish:hover { background: rgba(248,113,113,0.1); }
+
+  /* כפתור AI */
+  .btn-ai {
+    background: linear-gradient(135deg, #f97316, #ea580c);
+    color: white;
+    border: none;
+    padding: 7px 16px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(249,115,22,0.3);
+  }
+  .btn-ai:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(249,115,22,0.4); }

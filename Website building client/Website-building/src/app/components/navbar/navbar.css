@@ -1,0 +1,170 @@
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&display=swap');
+
+/* ─── Navbar ────────────────────────────────────────────── */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  height: 64px;
+  background: #0d0d0d;
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.08);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  font-family: 'Heebo', sans-serif;
+  direction: ltr;
+}
+
+/* ─── Logo ──────────────────────────────────────────────── */
+.logo-wrapper {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.nexus-logo {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
+  transition: opacity 0.15s;
+}
+
+.nexus-logo:hover {
+  opacity: 0.85;
+}
+
+/* ─── Nav Links ─────────────────────────────────────────── */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  direction: rtl;
+}
+
+/* ─── Welcome ───────────────────────────────────────────── */
+.welcome-msg {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.45);
+  padding: 0 10px;
+  font-weight: 300;
+  white-space: nowrap;
+}
+
+.user-label {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.welcome-msg strong,
+.welcome-msg span:last-child {
+  color: rgba(255, 255, 255, 0.75);
+  font-weight: 500;
+}
+
+/* ─── Nav Link ──────────────────────────────────────────── */
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.55);
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background 0.15s, color 0.15s;
+  text-decoration: none;
+  font-family: 'Heebo', sans-serif;
+}
+
+.nav-link:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+}
+
+.nav-link.active {
+  color: #ff7b00;
+  background: rgba(255, 123, 0, 0.08);
+}
+
+/* ─── Divider between links and buttons ─────────────────── */
+.nav-links li:has(.create-btn) {
+  margin-left: 8px;
+  padding-left: 8px;
+  border-left: 0.5px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ─── Create Button ─────────────────────────────────────── */
+.create-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #ff7b00;
+  color: #000000;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: 'Heebo', sans-serif;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+  white-space: nowrap;
+}
+
+.create-btn:hover {
+  background: #ff9100;
+  transform: translateY(-1px);
+}
+
+.create-btn:active {
+  transform: translateY(0);
+}
+
+/* ─── Logout Button ─────────────────────────────────────── */
+.logout-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.35);
+  border: 0.5px solid rgba(255, 255, 255, 0.12);
+  padding: 7px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: 'Heebo', sans-serif;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+  white-space: nowrap;
+}
+
+.logout-btn:hover {
+  border-color: rgba(255, 80, 80, 0.4);
+  color: #ff5050;
+  background: rgba(255, 80, 80, 0.06);
+}
+
+/* ─── Responsive ─────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .navbar {
+    padding: 0 16px;
+  }
+
+  .welcome-msg {
+    display: none;
+  }
+
+  .nav-link {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+
+  .create-btn {
+    padding: 7px 13px;
+    font-size: 13px;
+  }
+}

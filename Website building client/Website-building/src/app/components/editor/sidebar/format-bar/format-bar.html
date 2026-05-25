@@ -1,0 +1,604 @@
+<!-- format-bar.html — מיקום: src/app/components/editor/sidebar/format-bar/format-bar.html
+  תיקונים:
+  ✅ Navbar — הוסף שדות fontSize + fontWeight
+  ✅ contact — פאנל עריכה חדש (כותרת, כפתור, צבעים)
+  ✅ testimonial — פאנל עריכה חדש (טקסט, שם, תפקיד, צבעים)
+  ✅ pricing — פאנל עריכה חדש (כותרת, מחיר, פיצ'רים הניתנים לעריכה)
+  ✅ about — הוסף שדות עריכת פרטי עסק
+-->
+
+<div class="format-bar" *ngIf="state.selectedEl() as el" (click)="$event.stopPropagation()">
+
+  <!-- שם ו-type האלמנט הנבחר -->
+  <div class="fp-el-name">
+    {{ el.label }}
+    <span class="fp-el-type">{{ el.type }}</span>
+  </div>
+
+  <!-- מיקום ומידות -->
+  <div class="fp-section">
+    <div class="fp-title">מיקום ומידות</div>
+    <div class="fp-row">
+      <div class="fp-field-wrap">
+        <div class="fp-field-lbl">W</div>
+        <div class="fp-field"><input type="number" [(ngModel)]="el.width" min="4"></div>
+      </div>
+      <div class="fp-field-wrap">
+        <div class="fp-field-lbl">H</div>
+        <div class="fp-field"><input type="number" [(ngModel)]="el.height" min="4"></div>
+      </div>
+    </div>
+    <div class="fp-row">
+      <div class="fp-field-wrap">
+        <div class="fp-field-lbl">X</div>
+        <div class="fp-field"><input type="number" [(ngModel)]="el.x" min="0"></div>
+      </div>
+      <div class="fp-field-wrap">
+        <div class="fp-field-lbl">Y</div>
+        <div class="fp-field"><input type="number" [(ngModel)]="el.y" min="0"></div>
+      </div>
+    </div>
+    <div class="fp-row">
+      <div class="fp-field-wrap">
+        <div class="fp-field-lbl">עיגול</div>
+        <div class="fp-field"><input type="number" [(ngModel)]="el.border.radius" min="0" max="200"></div>
+      </div>
+      <div class="fp-field-wrap">
+        <div class="fp-field-lbl">שקיפות</div>
+        <div class="fp-field"><input type="number" [(ngModel)]="el.opacity" min="0" max="1" step="0.05"></div>
+      </div>
+    </div>
+    <div class="fp-align-row" style="margin-top:6px">
+      <button class="fp-al" (click)="state.bringToFront(el)" title="הבא לקדמה">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="1" y="3" width="6" height="6" rx="1" opacity="0.4"/><rect x="5" y="1" width="6" height="6" rx="1"/></svg>
+      </button>
+      <button class="fp-al" (click)="state.bringForward(el)" title="קדימה">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="2" y="4" width="6" height="6" rx="1" opacity="0.4"/><rect x="4" y="2" width="6" height="6" rx="1"/></svg>
+      </button>
+      <button class="fp-al" (click)="state.sendBackward(el)" title="אחורה">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="4" y="2" width="6" height="6" rx="1"/><rect x="2" y="4" width="6" height="6" rx="1" opacity="0.4"/></svg>
+      </button>
+      <button class="fp-al" (click)="state.sendToBack(el)" title="שלח לאחור">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="5" y="1" width="6" height="6" rx="1"/><rect x="1" y="3" width="6" height="6" rx="1" opacity="0.4"/></svg>
+      </button>
+      <div style="flex:1"></div>
+      <button class="fp-al" (click)="state.duplicateElement(el)" title="שכפל">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="1" y="3" width="7" height="7" rx="1" opacity="0.5"/><rect x="4" y="1" width="7" height="7" rx="1"/></svg>
+      </button>
+      <button class="fp-al danger" (click)="state.deleteElement(el.id)" title="מחק">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><path d="M3 1h6l.8 1H2L3 1zm-1.5 2h9l-.7 7H3.2L1.5 3zm3 1.5v4h1v-4H4.5zm2 0v4h1v-4H6.5z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- גופן — גלובלי לכל האלמנטים -->
+  <div class="fp-section">
+    <div class="fp-title">גופן</div>
+    <div class="fp-row">
+      <select [(ngModel)]="el.content.fontFamily" class="fp-select">
+        <option value="">ברירת מחדל</option>
+        <option value="Arial, sans-serif">Arial</option>
+        <option value="'Times New Roman', serif">Times New Roman</option>
+        <option value="'Courier New', monospace">Courier New</option>
+        <option value="Georgia, serif">Georgia</option>
+        <option value="Verdana, sans-serif">Verdana</option>
+        <option value="Tahoma, sans-serif">Tahoma</option>
+        <option value="Impact, sans-serif">Impact</option>
+        <option value="'Brush Script MT', cursive">Brush Script</option>
+        <option value="'Comic Sans MS', cursive">Comic Sans</option>
+        <option value="Palatino, serif">Palatino</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- גבול -->
+  <div class="fp-section">
+    <div class="fp-title">גבול</div>
+    <div class="fp-row">
+      <div class="fp-field-wrap">
+        <div class="fp-field-lbl">עובי</div>
+        <div class="fp-field"><input type="number" [(ngModel)]="el.border.width" min="0" max="20"></div>
+      </div>
+      <div class="fp-field-wrap">
+        <div class="fp-field-lbl">סגנון</div>
+        <select [(ngModel)]="el.border.style" class="fp-select">
+          <option value="solid">רציף</option>
+          <option value="dashed">מקווקו</option>
+          <option value="dotted">נקודות</option>
+          <option value="double">כפול</option>
+        </select>
+      </div>
+    </div>
+    <div class="fp-color-row">
+      <span class="fp-color-lbl">צבע</span>
+      <div class="fp-color-field">
+        <input type="color" [(ngModel)]="el.border.color" class="fp-color-dot">
+        <span class="fp-color-hex">{{ el.border.color }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- צל -->
+  <div class="fp-section">
+    <div class="fp-title">
+      צל
+      <button class="fp-al" [class.on]="el.shadow" (click)="el.shadow = !el.shadow" style="width:auto;padding:0 6px;font-size:10px">{{ el.shadow ? 'פעיל' : 'כבוי' }}</button>
+    </div>
+    <ng-container *ngIf="el.shadow">
+      <div class="fp-color-row">
+        <span class="fp-color-lbl">צבע</span>
+        <div class="fp-color-field"><input type="color" [(ngModel)]="el.shadowColor" class="fp-color-dot"><span class="fp-color-hex">{{ el.shadowColor }}</span></div>
+      </div>
+      <div class="fp-row">
+        <div class="fp-field-wrap"><div class="fp-field-lbl">טשטוש</div><div class="fp-field"><input type="number" [(ngModel)]="el.shadowBlur" min="0" max="40"></div></div>
+        <div class="fp-field-wrap"><div class="fp-field-lbl">X</div><div class="fp-field"><input type="number" [(ngModel)]="el.shadowX"></div></div>
+        <div class="fp-field-wrap"><div class="fp-field-lbl">Y</div><div class="fp-field"><input type="number" [(ngModel)]="el.shadowY"></div></div>
+      </div>
+    </ng-container>
+  </div>
+
+  <!-- טקסט -->
+  <div class="fp-section" *ngIf="el.type === 'text'">
+    <div class="fp-title">טיפוגרפיה</div>
+    <div class="fp-row">
+      <div class="fp-field-wrap"><div class="fp-field-lbl">גודל</div><div class="fp-field"><input type="number" [(ngModel)]="el.content.fontSize" min="8" max="120"></div></div>
+      <div class="fp-field-wrap"><div class="fp-field-lbl">שורה</div><div class="fp-field"><input type="number" [(ngModel)]="el.content.lineHeight" min="1" max="3" step="0.1"></div></div>
+    </div>
+    <div class="fp-align-row">
+      <button class="fp-al" [class.on]="el.content.bold"      (click)="formatQuill(el,'bold')"      style="font-weight:700;font-size:12px">B</button>
+      <button class="fp-al" [class.on]="el.content.italic"    (click)="formatQuill(el,'italic')"    style="font-style:italic;font-size:12px">I</button>
+      <button class="fp-al" [class.on]="el.content.underline" (click)="formatQuill(el,'underline')" style="text-decoration:underline;font-size:12px">U</button>
+      <div style="width:6px"></div>
+      <button class="fp-al" [class.on]="el.content.align==='right'"  (click)="el.content.align='right'"><svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor"><rect x="1" y="1" width="9" height="1.5" rx="0.5"/><rect x="3" y="4" width="7" height="1.5" rx="0.5"/><rect x="1" y="7" width="9" height="1.5" rx="0.5"/></svg></button>
+      <button class="fp-al" [class.on]="el.content.align==='center'" (click)="el.content.align='center'"><svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor"><rect x="1" y="1" width="9" height="1.5" rx="0.5"/><rect x="2" y="4" width="7" height="1.5" rx="0.5"/><rect x="1" y="7" width="9" height="1.5" rx="0.5"/></svg></button>
+      <button class="fp-al" [class.on]="el.content.align==='left'"   (click)="el.content.align='left'"><svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor"><rect x="1" y="1" width="9" height="1.5" rx="0.5"/><rect x="1" y="4" width="7" height="1.5" rx="0.5"/><rect x="1" y="7" width="9" height="1.5" rx="0.5"/></svg></button>
+      <div style="flex:1"></div>
+      <button class="fp-al" (click)="insertLink(el)" title="הוסף קישור"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><path d="M4 7l3-3"/><path d="M2.5 8.5a2 2 0 002.8 0L7 6.8a2 2 0 000-2.8"/><path d="M8.5 2.5a2 2 0 00-2.8 0L4 4.2a2 2 0 000 2.8"/></svg></button>
+    </div>
+    <div class="fp-color-row" style="margin-top:6px">
+      <span class="fp-color-lbl">טקסט</span>
+      <div class="fp-color-field"><input type="color" [(ngModel)]="el.content.color" class="fp-color-dot"><span class="fp-color-hex">{{ el.content.color }}</span></div>
+    </div>
+    <div class="fp-color-row">
+      <span class="fp-color-lbl">רקע</span>
+      <div class="fp-color-field">
+        <input type="color" [(ngModel)]="el.content.bgColor" class="fp-color-dot">
+        <span class="fp-color-hex">{{ el.content.bgColor }}</span>
+        <button class="fp-al" (click)="el.content.bgColor='transparent'" style="width:auto;padding:0 6px;font-size:9px">ללא</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- כפתור -->
+  <div class="fp-section" *ngIf="el.type === 'button'">
+    <div class="fp-title">כפתור</div>
+    <div class="fp-align-row" style="margin-bottom:6px">
+      <button class="fp-al" [class.on]="el.content.style==='filled'"  (click)="el.content.style='filled'"  style="width:auto;padding:0 8px;font-size:10px">ממולא</button>
+      <button class="fp-al" [class.on]="el.content.style==='outline'" (click)="el.content.style='outline'" style="width:auto;padding:0 8px;font-size:10px">מסגרת</button>
+      <button class="fp-al" [class.on]="el.content.style==='ghost'"   (click)="el.content.style='ghost'"   style="width:auto;padding:0 8px;font-size:10px">שקוף</button>
+      <button class="fp-al" [class.on]="el.content.style==='pill'"    (click)="el.content.style='pill'"    style="width:auto;padding:0 8px;font-size:10px">כדורי</button>
+    </div>
+    <div class="fp-color-row">
+      <span class="fp-color-lbl">רקע</span>
+      <div class="fp-color-field">
+        <input type="color" [(ngModel)]="el.content.bgColor" class="fp-color-dot">
+        <span class="fp-color-hex">{{ el.content.bgColor }}</span>
+        <button class="fp-al" (click)="el.content.bgColor='transparent'" style="width:auto;padding:0 6px;font-size:9px">ללא</button>
+      </div>
+    </div>
+    <div class="fp-color-row">
+      <span class="fp-color-lbl">טקסט</span>
+      <div class="fp-color-field"><input type="color" [(ngModel)]="el.content.textColor" class="fp-color-dot"><span class="fp-color-hex">{{ el.content.textColor }}</span></div>
+    </div>
+    <div class="fp-row" style="margin-top:4px">
+      <div class="fp-field-wrap"><div class="fp-field-lbl">גודל גופן</div><div class="fp-field"><input type="number" [(ngModel)]="el.content.fontSize" min="10" max="40"></div></div>
+      <div class="fp-field-wrap"><div class="fp-field-lbl">עיגול</div><div class="fp-field"><input type="number" [(ngModel)]="el.content.radius" min="0" max="50"></div></div>
+    </div>
+    <div class="fp-row" style="margin-top:4px">
+      <div class="fp-field-wrap">
+        <div class="fp-field-lbl">קישור לדף</div>
+        <select [(ngModel)]="el.content.linkTo" class="fp-select">
+          <option value="">-- ללא --</option>
+          <option *ngFor="let p of state.pages()" [value]="p.slug">{{ p.title }}</option>
+        </select>
+      </div>
+    </div>
+    <div class="fp-row" style="margin-top:4px">
+      <div class="fp-field-wrap" style="flex:1">
+        <div class="fp-field-lbl">או URL חיצוני</div>
+        <div class="fp-field"><input [(ngModel)]="el.content.linkUrl" placeholder="https://..." style="width:100%"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <div class="fp-section" *ngIf="el.type === 'hero'">
+    <div class="fp-title">Hero Banner</div>
+    <div class="fp-color-row">
+      <span class="fp-color-lbl">רקע</span>
+      <div class="fp-color-field">
+        <input type="color" [(ngModel)]="el.content.bgColor" class="fp-color-dot">
+        <span class="fp-color-hex">{{ el.content.bgColor }}</span>
+        <button class="fp-al" (click)="el.content.bgColor='transparent'" style="width:auto;padding:0 6px;font-size:9px">ללא</button>
+      </div>
+    </div>
+    <div class="fp-color-row">
+      <span class="fp-color-lbl">טקסט</span>
+      <div class="fp-color-field"><input type="color" [(ngModel)]="el.content.textColor" class="fp-color-dot"><span class="fp-color-hex">{{ el.content.textColor }}</span></div>
+    </div>
+    <div class="fp-color-row">
+      <span class="fp-color-lbl">כפתור</span>
+      <div class="fp-color-field"><input type="color" [(ngModel)]="el.content.btnColor" class="fp-color-dot"><span class="fp-color-hex">{{ el.content.btnColor }}</span></div>
+    </div>
+    <div class="fp-row" style="margin-top:4px">
+      <div class="fp-field-wrap">
+        <div class="fp-field-lbl">טקסט כפתור</div>
+        <div class="fp-field" style="flex:1"><input [(ngModel)]="el.content.btnText" style="width:100%"></div>
+      </div>
+    </div>
+    <label class="fp-upload" style="margin-top:6px">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="1" y="1" width="10" height="10" rx="1"/><circle cx="4" cy="4" r="1"/><path d="M1 8l3-3 2 2 2-2 3 3"/></svg>
+      העלה תמונת רקע
+      <input type="file" accept="image/*" (change)="onImageUpload($event, el, 'bgImage')" hidden>
+    </label>
+    <div class="fp-row" *ngIf="el.content.bgImage" style="margin-top:6px">
+      <span style="font-size:10px;color:#666;flex-shrink:0">overlay</span>
+      <input type="range" min="0" max="1" step="0.05" [(ngModel)]="el.content.overlayOpacity" class="fp-range">
+      <span style="font-size:10px;color:#858585;width:28px;text-align:left">{{ (el.content.overlayOpacity * 100).toFixed(0) }}%</span>
+    </div>
+    <div class="fp-row" style="margin-top:6px">
+      <div class="fp-field-wrap" style="flex:1">
+        <div class="fp-field-lbl">קישור לדף</div>
+        <select [(ngModel)]="el.content.linkTo" class="fp-select">
+          <option value="">-- ללא --</option>
+          <option *ngFor="let p of state.pages()" [value]="p.slug">{{ p.title }}</option>
+        </select>
+      </div>
+    </div>
+    <div class="fp-row" style="margin-top:4px">
+      <div class="fp-field-wrap" style="flex:1">
+        <div class="fp-field-lbl">או URL חיצוני</div>
+        <div class="fp-field"><input [(ngModel)]="el.content.linkUrl" placeholder="https://..." style="width:100%"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- תמונה -->
+  <div class="fp-section" *ngIf="el.type === 'image'">
+    <div class="fp-title">תמונה</div>
+    <label class="fp-upload">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="1" y="1" width="10" height="10" rx="1"/><circle cx="4" cy="4" r="1"/><path d="M1 8l3-3 2 2 2-2 3 3"/></svg>
+      החלף תמונה
+      <input type="file" accept="image/*" (change)="onImageUpload($event, el, 'url')" hidden>
+    </label>
+    <div class="fp-row" style="margin-top:6px">
+      <div class="fp-field-wrap">
+        <div class="fp-field-lbl">התאמה</div>
+        <select [(ngModel)]="el.content.objectFit" class="fp-select">
+          <option value="cover">מלא</option>
+          <option value="contain">כלול</option>
+          <option value="fill">מתיחה</option>
+        </select>
+      </div>
+      <div class="fp-field-wrap"><div class="fp-field-lbl">עיגול</div><div class="fp-field"><input type="number" [(ngModel)]="el.content.borderRadius" min="0" max="200"></div></div>
+    </div>
+  </div>
+
+  <!-- מוצר -->
+  <div class="fp-section" *ngIf="el.type === 'product'">
+    <div class="fp-title">מוצר</div>
+    <label class="fp-upload" style="margin-bottom:6px">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="1" y="1" width="10" height="10" rx="1"/><circle cx="4" cy="4" r="1"/><path d="M1 8l3-3 2 2 2-2 3 3"/></svg>
+      העלה תמונת מוצר
+      <input type="file" accept="image/*" (change)="onImageUpload($event, el, 'imageUrl')" hidden>
+    </label>
+    <div class="fp-color-row">
+      <span class="fp-color-lbl">רקע</span>
+      <div class="fp-color-field">
+        <input type="color" [(ngModel)]="el.content.bgColor" class="fp-color-dot">
+        <span class="fp-color-hex">{{ el.content.bgColor }}</span>
+        <button class="fp-al" (click)="el.content.bgColor='transparent'" style="width:auto;padding:0 6px;font-size:9px">ללא</button>
+      </div>
+    </div>
+    <div class="fp-color-row"><span class="fp-color-lbl">שם</span><div class="fp-color-field"><input type="color" [(ngModel)]="el.content.nameColor" class="fp-color-dot"><span class="fp-color-hex">{{ el.content.nameColor }}</span></div></div>
+    <div class="fp-color-row"><span class="fp-color-lbl">מחיר</span><div class="fp-color-field"><input type="color" [(ngModel)]="el.content.priceColor" class="fp-color-dot"><span class="fp-color-hex">{{ el.content.priceColor }}</span></div></div>
+    <div class="fp-color-row"><span class="fp-color-lbl">כפתור</span><div class="fp-color-field"><input type="color" [(ngModel)]="el.content.btnColor" class="fp-color-dot"><span class="fp-color-hex">{{ el.content.btnColor }}</span></div></div>
+  </div>
+
+  <!-- גלריה -->
+  <div class="fp-section" *ngIf="el.type === 'gallery'">
+    <div class="fp-title">גלריה</div>
+    <button class="fp-btn" (click)="addGalleryImages(el)" style="width:100%;justify-content:center;margin-bottom:6px">+ הוסף תמונות</button>
+    <div class="fp-row">
+      <div class="fp-field-wrap">
+        <div class="fp-field-lbl">פריסה</div>
+        <select [(ngModel)]="el.content.layout" class="fp-select">
+          <option value="grid">גריד</option>
+          <option value="row">שורה</option>
+        </select>
+      </div>
+      <div class="fp-field-wrap"><div class="fp-field-lbl">רווח</div><div class="fp-field"><input type="number" [(ngModel)]="el.content.gap" min="0" max="30"></div></div>
+    </div>
+  </div>
+
+  <!-- וידאו -->
+  <div class="fp-section" *ngIf="el.type === 'video'">
+    <div class="fp-title">וידאו</div>
+    <button class="fp-btn" (click)="uploadVideo(el)" style="width:100%;justify-content:center;margin-bottom:6px">העלה וידאו</button>
+    <div class="fp-field-wrap">
+      <div class="fp-field-lbl">או הדבק URL</div>
+      <div class="fp-field"><input [(ngModel)]="el.content.url" placeholder="YouTube..." style="width:100%"></div>
+    </div>
+  </div>
+
+  <!-- PDF -->
+  <div class="fp-section" *ngIf="el.type === 'pdf'">
+    <div class="fp-title">PDF</div>
+    <label class="fp-upload" style="width:100%;justify-content:center">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M2 1h5l3 3v7a1 1 0 01-1 1H2a1 1 0 01-1-1V2a1 1 0 011-1z"/><path d="M7 1v3h3"/></svg>
+      החלף PDF
+      <input type="file" accept="application/pdf" (change)="onPdfUpload($event, el)" hidden>
+    </label>
+  </div>
+
+  <!-- PDF Download -->
+  <div class="fp-section" *ngIf="el.type === 'pdf-download'">
+    <div class="fp-title">הורדת PDF</div>
+    <label class="fp-upload" style="width:100%;justify-content:center;margin-bottom:6px">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M6 1v7"/><path d="M3 5l3 3 3-3"/><rect x="1" y="9" width="10" height="2" rx="1"/></svg>
+      העלה PDF
+      <input type="file" accept="application/pdf" (change)="onPdfUpload($event, el)" hidden>
+    </label>
+    <div class="fp-row">
+      <div class="fp-field-wrap"><div class="fp-field-lbl">טקסט כפתור</div><div class="fp-field"><input [(ngModel)]="el.content.btnText" style="width:100%"></div></div>
+    </div>
+    <div class="fp-color-row" style="margin-top:4px">
+      <span class="fp-color-lbl">כפתור</span>
+      <div class="fp-color-field"><input type="color" [(ngModel)]="el.content.btnColor" class="fp-color-dot"><span class="fp-color-hex">{{ el.content.btnColor }}</span></div>
+    </div>
+  </div>
+
+  <!-- Navbar — תוקן: הוסף fontSize + fontWeight -->
+  <div class="fp-section" *ngIf="el.type === 'navbar'">
+    <div class="fp-title">Navbar</div>
+    <div class="fp-color-row">
+      <span class="fp-color-lbl">רקע</span>
+      <div class="fp-color-field">
+        <input type="color" [(ngModel)]="el.content.bgColor" class="fp-color-dot">
+        <span class="fp-color-hex">{{ el.content.bgColor }}</span>
+        <button class="fp-al" (click)="el.content.bgColor='transparent'" style="width:auto;padding:0 6px;font-size:9px">ללא</button>
+      </div>
+    </div>
+    <div class="fp-color-row">
+      <span class="fp-color-lbl">טקסט</span>
+      <div class="fp-color-field"><input type="color" [(ngModel)]="el.content.textColor" class="fp-color-dot"><span class="fp-color-hex">{{ el.content.textColor }}</span></div>
+    </div>
+    <div class="fp-row" style="margin-top:4px">
+      <div class="fp-field-wrap"><div class="fp-field-lbl">שם האתר</div><div class="fp-field"><input [(ngModel)]="el.content.siteName" style="width:100%"></div></div>
+      <label class="fp-upload" style="margin-top:6px">
+  העלה לוגו לנב
+  <input type="file" accept="image/*" 
+    (change)="onImageUpload($event, el, 'logoUrl')" hidden>
+</label>
+    </div>
+    <!-- תיקון: גודל ועובי גופן — מוחלים על nb-brand ו-nb-link ב-HTML -->
+    <div class="fp-row" style="margin-top:4px">
+      <div class="fp-field-wrap">
+        <div class="fp-field-lbl">גודל גופן</div>
+        <div class="fp-field"><input type="number" [(ngModel)]="el.content.fontSize" min="10" max="28" placeholder="16" style="width:100%"></div>
+      </div>
+      <div class="fp-field-wrap">
+        <div class="fp-field-lbl">עובי גופן</div>
+        <select [(ngModel)]="el.content.fontWeight" class="fp-select">
+          <option value="400">רגיל</option>
+          <option value="600">בינוני</option>
+          <option value="700">מודגש</option>
+          <option value="900">שחור</option>
+        </select>
+      </div>
+    </div>
+    <div class="fp-row" style="margin-top:6px">
+      <button class="fp-al" [class.on]="el.content.sticky" (click)="el.content.sticky = !el.content.sticky" style="width:auto;padding:0 8px;font-size:10px">נשאר למעלה</button>
+      <button class="fp-al" [class.on]="showNavLinks" (click)="showNavLinks = !showNavLinks" style="width:auto;padding:0 8px;font-size:10px">קישורים ({{ el.content.links.length }})</button>
+      <button class="fp-al" (click)="state.applyNavbarToAllPages(el)" style="width:auto;padding:0 8px;font-size:10px">📌 כל הדפים</button>
+    </div>
+    <ng-container *ngIf="showNavLinks">
+      <div style="margin-top:6px">
+        <ng-container *ngFor="let link of el.content.links; let i = index">
+          <div class="fp-row" style="margin-bottom:4px">
+            <div class="fp-field" style="flex:1"><input [(ngModel)]="link.label" placeholder="טקסט" style="width:100%"></div>
+            <select [(ngModel)]="link.type" class="fp-select" style="width:70px;flex-shrink:0">
+              <option value="page">דף</option>
+              <option value="url">URL</option>
+            </select>
+            <button class="fp-al danger" (click)="el.content.links.splice(i, 1)">✕</button>
+          </div>
+          <div class="fp-row" style="margin-bottom:6px">
+            <select *ngIf="link.type !== 'url'" [(ngModel)]="link.page" class="fp-select">
+              <option value="">-- דף --</option>
+              <option *ngFor="let p of state.pages()" [value]="p.slug">{{ p.title }}</option>
+            </select>
+            <div class="fp-field" *ngIf="link.type === 'url'" style="flex:1"><input [(ngModel)]="link.url" placeholder="https://..." style="width:100%"></div>
+          </div>
+        </ng-container>
+        <button class="fp-btn" (click)="el.content.links.push({label:'קישור', type:'page', page:'', url:''})" style="width:100%;justify-content:center">+ הוסף קישור</button>
+      </div>
+    </ng-container>
+  </div>
+
+  <!-- הזמנת תור -->
+  <div class="fp-section" *ngIf="el.type === 'booking'">
+    <div class="fp-title">הזמנת תור</div>
+    <div class="fp-row"><div class="fp-field-wrap"><div class="fp-field-lbl">כותרת</div><div class="fp-field"><input [(ngModel)]="el.content.title" style="width:100%"></div></div></div>
+    <div class="fp-color-row" style="margin-top:4px">
+      <span class="fp-color-lbl">רקע</span>
+      <div class="fp-color-field">
+        <input type="color" [(ngModel)]="el.content.bgColor" class="fp-color-dot">
+        <span class="fp-color-hex">{{ el.content.bgColor }}</span>
+        <button class="fp-al" (click)="el.content.bgColor='transparent'" style="width:auto;padding:0 6px;font-size:9px">ללא</button>
+      </div>
+    </div>
+    <div class="fp-color-row"><span class="fp-color-lbl">כפתור</span><div class="fp-color-field"><input type="color" [(ngModel)]="el.content.btnColor" class="fp-color-dot"><span class="fp-color-hex">{{ el.content.btnColor }}</span></div></div>
+    <div class="fp-title" style="margin-top:8px">שדות</div>
+    <div class="fp-align-row">
+      <button class="fp-al" [class.on]="el.content.fields.name"  (click)="el.content.fields.name=!el.content.fields.name"   style="width:auto;padding:0 8px;font-size:10px">שם</button>
+      <button class="fp-al" [class.on]="el.content.fields.phone" (click)="el.content.fields.phone=!el.content.fields.phone" style="width:auto;padding:0 8px;font-size:10px">טלפון</button>
+      <button class="fp-al" [class.on]="el.content.fields.date"  (click)="el.content.fields.date=!el.content.fields.date"   style="width:auto;padding:0 8px;font-size:10px">תאריך</button>
+      <button class="fp-al" [class.on]="el.content.fields.time"  (click)="el.content.fields.time=!el.content.fields.time"   style="width:auto;padding:0 8px;font-size:10px">שעה</button>
+      <button class="fp-al" [class.on]="el.content.fields.note"  (click)="el.content.fields.note=!el.content.fields.note"   style="width:auto;padding:0 8px;font-size:10px">הערה</button>
+    </div>
+  </div>
+
+  <!-- אודות — תוקן: הוסף שדות עריכת פרטי עסק -->
+  <div class="fp-section" *ngIf="el.type === 'about'">
+    <div class="fp-title">אודות</div>
+    <div class="fp-color-row">
+      <span class="fp-color-lbl">רקע</span>
+      <div class="fp-color-field">
+        <input type="color" [(ngModel)]="el.content.bgColor" class="fp-color-dot">
+        <span class="fp-color-hex">{{ el.content.bgColor }}</span>
+        <button class="fp-al" (click)="el.content.bgColor='transparent'" style="width:auto;padding:0 6px;font-size:9px">ללא</button>
+      </div>
+    </div>
+    <div class="fp-color-row"><span class="fp-color-lbl">טקסט</span><div class="fp-color-field"><input type="color" [(ngModel)]="el.content.textColor" class="fp-color-dot"><span class="fp-color-hex">{{ el.content.textColor }}</span></div></div>
+    <label class="fp-upload" style="margin-top:6px;width:100%;justify-content:center">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="1" y="1" width="10" height="10" rx="1"/><circle cx="4" cy="4" r="1"/><path d="M1 8l3-3 2 2 2-2 3 3"/></svg>
+      העלה לוגו
+      <input type="file" accept="image/*" (change)="onImageUpload($event, el, 'logoUrl')" hidden>
+    </label>
+    <div class="fp-row" style="margin-top:8px">
+      <div class="fp-field-wrap"><div class="fp-field-lbl">שם עסק</div><div class="fp-field"><input [(ngModel)]="el.content.businessName" style="width:100%"></div></div>
+    </div>
+    <div class="fp-row" style="margin-top:4px">
+      <div class="fp-field-wrap"><div class="fp-field-lbl">תיאור</div><div class="fp-field"><input [(ngModel)]="el.content.description" style="width:100%"></div></div>
+    </div>
+    <div class="fp-row" style="margin-top:4px">
+      <div class="fp-field-wrap"><div class="fp-field-lbl">טלפון</div><div class="fp-field"><input [(ngModel)]="el.content.phone" style="width:100%"></div></div>
+    </div>
+    <div class="fp-row" style="margin-top:4px">
+      <div class="fp-field-wrap"><div class="fp-field-lbl">אימייל</div><div class="fp-field"><input [(ngModel)]="el.content.email" style="width:100%"></div></div>
+    </div>
+    <div class="fp-row" style="margin-top:4px">
+      <div class="fp-field-wrap"><div class="fp-field-lbl">כתובת</div><div class="fp-field"><input [(ngModel)]="el.content.address" style="width:100%"></div></div>
+    </div>
+  </div>
+
+  <!-- יצירת קשר — תוקן: פאנל חדש -->
+  <div class="fp-section" *ngIf="el.type === 'contact'">
+    <div class="fp-title">יצירת קשר</div>
+    <div class="fp-row">
+      <div class="fp-field-wrap"><div class="fp-field-lbl">כותרת</div><div class="fp-field"><input [(ngModel)]="el.content.title" style="width:100%"></div></div>
+    </div>
+    <div class="fp-row" style="margin-top:4px">
+      <div class="fp-field-wrap"><div class="fp-field-lbl">טקסט כפתור</div><div class="fp-field"><input [(ngModel)]="el.content.btnText" style="width:100%"></div></div>
+    </div>
+    <div class="fp-color-row" style="margin-top:4px">
+      <span class="fp-color-lbl">רקע</span>
+      <div class="fp-color-field">
+        <input type="color" [(ngModel)]="el.content.bgColor" class="fp-color-dot">
+        <span class="fp-color-hex">{{ el.content.bgColor }}</span>
+        <button class="fp-al" (click)="el.content.bgColor='transparent'" style="width:auto;padding:0 6px;font-size:9px">ללא</button>
+      </div>
+    </div>
+    <div class="fp-color-row"><span class="fp-color-lbl">כותרת</span><div class="fp-color-field"><input type="color" [(ngModel)]="el.content.titleColor" class="fp-color-dot"><span class="fp-color-hex">{{ el.content.titleColor }}</span></div></div>
+    <div class="fp-color-row"><span class="fp-color-lbl">כפתור</span><div class="fp-color-field"><input type="color" [(ngModel)]="el.content.btnColor" class="fp-color-dot"><span class="fp-color-hex">{{ el.content.btnColor }}</span></div></div>
+  </div>
+
+  <!-- המלצה — תוקן: פאנל חדש -->
+  <div class="fp-section" *ngIf="el.type === 'testimonial'">
+    <div class="fp-title">המלצה</div>
+    <div class="fp-row">
+      <div class="fp-field-wrap">
+        <div class="fp-field-lbl">ציטוט</div>
+        <div class="fp-field" style="height:auto">
+          <textarea [(ngModel)]="el.content.text" style="width:100%;background:transparent;border:none;color:#ccc;resize:none;height:60px;font-size:11px;outline:none"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="fp-row" style="margin-top:4px">
+      <div class="fp-field-wrap"><div class="fp-field-lbl">שם לקוח</div><div class="fp-field"><input [(ngModel)]="el.content.author" style="width:100%"></div></div>
+    </div>
+    <div class="fp-row" style="margin-top:4px">
+      <div class="fp-field-wrap"><div class="fp-field-lbl">תפקיד</div><div class="fp-field"><input [(ngModel)]="el.content.role" style="width:100%"></div></div>
+    </div>
+    <div class="fp-color-row" style="margin-top:4px">
+      <span class="fp-color-lbl">רקע</span>
+      <div class="fp-color-field">
+        <input type="color" [(ngModel)]="el.content.bgColor" class="fp-color-dot">
+        <span class="fp-color-hex">{{ el.content.bgColor }}</span>
+        <button class="fp-al" (click)="el.content.bgColor='transparent'" style="width:auto;padding:0 6px;font-size:9px">ללא</button>
+      </div>
+    </div>
+    <div class="fp-color-row"><span class="fp-color-lbl">טקסט</span><div class="fp-color-field"><input type="color" [(ngModel)]="el.content.textColor" class="fp-color-dot"><span class="fp-color-hex">{{ el.content.textColor }}</span></div></div>
+    <div class="fp-color-row"><span class="fp-color-lbl">מבטא</span><div class="fp-color-field"><input type="color" [(ngModel)]="el.content.accentColor" class="fp-color-dot"><span class="fp-color-hex">{{ el.content.accentColor }}</span></div></div>
+  </div>
+
+  <!-- מחירון — תוקן: פאנל חדש כולל עריכת פיצ'רים -->
+  <div class="fp-section" *ngIf="el.type === 'pricing'">
+    <div class="fp-title">מחירון</div>
+    <div class="fp-row">
+      <div class="fp-field-wrap"><div class="fp-field-lbl">כותרת חבילה</div><div class="fp-field"><input [(ngModel)]="el.content.title" style="width:100%"></div></div>
+    </div>
+    <div class="fp-row" style="margin-top:4px">
+      <div class="fp-field-wrap">
+        <div class="fp-field-lbl">מחיר (₪)</div>
+        <div class="fp-field"><input type="number" [(ngModel)]="el.content.price" min="0" style="width:100%"></div>
+      </div>
+      <div class="fp-field-wrap">
+        <div class="fp-field-lbl">תקופה</div>
+        <div class="fp-field"><input [(ngModel)]="el.content.period" style="width:100%"></div>
+      </div>
+    </div>
+    <div class="fp-row" style="margin-top:4px">
+      <div class="fp-field-wrap"><div class="fp-field-lbl">טקסט כפתור</div><div class="fp-field"><input [(ngModel)]="el.content.btnText" style="width:100%"></div></div>
+    </div>
+    <div class="fp-title" style="margin-top:8px">פיצ'רים</div>
+    <div *ngFor="let f of el.content.features; let i = index" class="fp-row" style="margin-bottom:4px">
+      <div class="fp-field" style="flex:1"><input [(ngModel)]="el.content.features[i]" style="width:100%"></div>
+      <button class="fp-al danger" (click)="el.content.features.splice(i,1)">✕</button>
+    </div>
+    <button class="fp-btn" (click)="el.content.features.push('פיצ\'ר חדש')" style="width:100%;justify-content:center;margin-top:4px">+ הוסף פיצ'ר</button>
+    <div class="fp-color-row" style="margin-top:6px">
+      <span class="fp-color-lbl">רקע</span>
+      <div class="fp-color-field">
+        <input type="color" [(ngModel)]="el.content.bgColor" class="fp-color-dot">
+        <span class="fp-color-hex">{{ el.content.bgColor }}</span>
+        <button class="fp-al" (click)="el.content.bgColor='transparent'" style="width:auto;padding:0 6px;font-size:9px">ללא</button>
+      </div>
+    </div>
+    <div class="fp-color-row"><span class="fp-color-lbl">כפתור</span><div class="fp-color-field"><input type="color" [(ngModel)]="el.content.btnColor" class="fp-color-dot"><span class="fp-color-hex">{{ el.content.btnColor }}</span></div></div>
+    <div class="fp-row" style="margin-top:6px">
+      <button class="fp-al" [class.on]="el.content.highlighted" (click)="el.content.highlighted = !el.content.highlighted" style="width:auto;padding:0 10px;font-size:10px">
+        ★ {{ el.content.highlighted ? 'מומלץ פעיל' : 'הגדר כמומלץ' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- מפריד -->
+  <div class="fp-section" *ngIf="el.type === 'divider'">
+    <div class="fp-title">מפריד</div>
+    <div class="fp-color-row"><span class="fp-color-lbl">צבע</span><div class="fp-color-field"><input type="color" [(ngModel)]="el.content.color" class="fp-color-dot"><span class="fp-color-hex">{{ el.content.color }}</span></div></div>
+    <div class="fp-row" style="margin-top:4px">
+      <div class="fp-field-wrap"><div class="fp-field-lbl">עובי</div><div class="fp-field"><input type="number" [(ngModel)]="el.content.thickness" min="1" max="20"></div></div>
+      <div class="fp-field-wrap">
+        <div class="fp-field-lbl">סגנון</div>
+        <select [(ngModel)]="el.content.style" class="fp-select">
+          <option value="solid">רציף</option>
+          <option value="dashed">מקווקו</option>
+          <option value="dotted">נקודות</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- צורה גיאומטרית -->
+  <div class="fp-section" *ngIf="el.type === 'shape'">
+    <div class="fp-title">צורה</div>
+    <div class="fp-color-row"><span class="fp-color-lbl">מילוי</span><div class="fp-color-field"><input type="color" [(ngModel)]="el.content.fillColor" class="fp-color-dot"><span class="fp-color-hex">{{ el.content.fillColor }}</span></div></div>
+    <div class="fp-color-row"><span class="fp-color-lbl">קו</span><div class="fp-color-field"><input type="color" [(ngModel)]="el.content.strokeColor" class="fp-color-dot"><span class="fp-color-hex">{{ el.content.strokeColor }}</span></div></div>
+    <div class="fp-row" style="margin-top:4px">
+      <div class="fp-field-wrap"><div class="fp-field-lbl">עובי קו</div><div class="fp-field"><input type="number" [(ngModel)]="el.content.strokeWidth" min="0" max="20"></div></div>
+    </div>
+  </div>
+
+</div>

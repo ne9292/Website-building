@@ -1,0 +1,57 @@
+<!-- ============================================================ -->
+<!-- login.html                                                  -->
+<!-- מיקום: src/app/components/auth/login/login.html            -->
+<!-- ============================================================ -->
+
+<div class="login-page">
+  <div class="login-container">
+
+    <!-- Brand mark -->
+    <div class="login-brand">
+      <span class="brand-dot"></span>
+      <span class="brand-name">SiteCraft</span>
+    </div>
+
+    <!-- Title -->
+    <h2>ברוך <span class="accent">שובך</span></h2>
+    <p class="login-subtitle">היכנס לחשבונך והמשך לבנות</p>
+
+    <!-- Reactive Form -->
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+
+      <div class="form-group">
+        <label>אימייל</label>
+        <input
+          type="email"
+          formControlName="email"
+          class="form-control"
+          placeholder="you@example.com"
+          [class.invalid]="email.invalid && email.touched">
+        <span class="error-msg" *ngIf="email.touched && email.hasError('required')">שדה חובה</span>
+        <span class="error-msg" *ngIf="email.touched && email.hasError('email')">כתובת מייל לא תקינה</span>
+      </div>
+
+      <div class="form-group">
+        <label>סיסמה</label>
+        <input
+          type="password"
+          formControlName="password"
+          class="form-control"
+          placeholder="לפחות 6 תווים"
+          [class.invalid]="password.invalid && password.touched">
+        <span class="error-msg" *ngIf="password.touched && password.hasError('required')">שדה חובה</span>
+        <span class="error-msg" *ngIf="password.touched && password.hasError('minlength')">סיסמה חייבת להכיל לפחות 6 תווים</span>
+      </div>
+
+      <button type="submit" class="btn-login">התחבר</button>
+
+    </form>
+
+    <!-- Server error -->
+    <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+
+    <!-- Register link -->
+    <p>עדיין לא רשום? <a routerLink="/register">צור חשבון חדש</a></p>
+
+  </div>
+</div>
